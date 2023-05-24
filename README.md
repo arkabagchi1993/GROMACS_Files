@@ -381,39 +381,8 @@ gedit md.mdp (Change MD RUN TIME as per your need)
 -------------- With Matplot (Jupyter notebook)-----------------
 1. Install jupyter notebook in a conda environment by typing, "conda install jupyter notebook".
 2. Open jupyter notebook and open Python3 kernel (from 'New').
-3. Paste the following lines and click run:
-###########################
-
-	import numpy as np
-
-	import matplotlib.pyplot as plt
-
-
-	# Load data from xvg file
-
-	data = np.loadtxt('<filename>.xvg', comments=['#', '@'])
-
-
-	# Extract columns from data
-
-	x = data[:, 0]
-
-	y = data[:, 1]
-
-
-	# Plot data using Matplotlib
-
-	plt.plot(x, y)
-
-	plt.xlabel('x label')
-
-	plt.ylabel('y label')
-
-	plt.title('Title of Plot')
-
-	plt.show()
-#############################
-**(Here replace the <filename> with your file name)**
+3. Paste the lines in the "Matplot.py" and click 'run'.
+(Change the filename, x label, y label and title of plot according to your requirement)
 
 
 
