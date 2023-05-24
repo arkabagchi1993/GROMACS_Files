@@ -125,6 +125,7 @@ align exactly below-
 	Protein_chain_A     1)
 
 SO, IT WILL LOOK LIKE--
+	
 	Protein_chain_A		1
 	LIG			1
 
@@ -166,6 +167,7 @@ TO
 	gmx grompp -f em.mdp -c solv_ions.gro -p topol.top -o em.tpr
 
 (OR)
+	
 	gmx grompp -f em.mdp -c solv_ions.gro -maxwarn 2 -p topol.top -o em.tpr
 
 **(The "-maxwarn 2" option is sometimes required to ignore the warnings)**
