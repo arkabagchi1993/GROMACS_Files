@@ -50,7 +50,9 @@
 	change it to LIG (Or the name given by you instead of "LIG") 
 	
 2.3.	bond orders "@<TRIPOS>BOND" will be arranged differently in each file 
-arrange them in specific order to avoid errors use sort_mol2_bonds.pl script.
+arrange them in specific order to avoid errors use "sort_mol2_bonds.pl" script.
+	
+	perl sort_mol2_bonds.pl LIG.mol2 LIG.mol2
 
 
 3. Go to SwissParam "http://www.swissparam.ch/" and upload the 'LIG.mol2 file'
