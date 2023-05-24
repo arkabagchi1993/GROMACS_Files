@@ -59,13 +59,22 @@ arrange them in specific order to avoid errors use "sort_mol2_bonds.pl" script.
 
 4. Download the .zip folder
 (Sometimes you will not be able to download the .zip file, then follow these instructions:
-	i. In your working directory, type "wget <URL of the Swissparam result page> (This will download a file named "index.html".
-	ii. Open this index.html file with "nano" or any other text editor of your choice. To open the file with nano, type "nano index.html".
-	iii. In this file, you will find a line, ""Results can be found in the following zip file: <a class="sib_link" href="http://www.swissparam.ch/results/514710792/<filename>.zip"><filename>.zip</a>. <br><br>"". (Where 'filename' will be the name of your .mol2 file). From this line copy the ""http://www.swissparam.ch/results/514710792/<filename>.zip"" part.
-	iv. Now exit the text editor and in your working directory, type "wget <the link you just copied>" (Eg: wget http://www.swissparam.ch/results/514710792/LIG.zip)
-	v. This will now download a .zip file
-	vi. To unzip the .zip file, type "unzip <filename>.zip
-	vii. Make sure now you have the LIG.pdb, LIG.itp in your working directory.
+	
+i. In your working directory, type "wget <URL of the Swissparam result page> (This will download a file named "index.html".
+
+ii. Open this index.html file with "nano" or any other text editor of your choice. To open the file with nano, type "nano index.html".
+
+iii. In this file, you will find a line, ""Results can be found in the following zip file: <a class="sib_link"href="http://www.swissparam.ch/results/514710792/<filename>.zip"><filename>.zip</a>. <br><br>"".
+
+(Where 'filename' will be the name of your .mol2 file). From this line copy the ""http://www.swissparam.ch/results/514710792/<filename>.zip"" part.
+
+iv. Now exit the text editor and in your working directory, type "wget <the link you just copied>" (Eg: wget http://www.swissparam.ch/results/514710792/LIG.zip)
+
+v. This will now download a .zip file
+
+vi. To unzip the .zip file, type "unzip <filename>.zip
+
+vii. Make sure now you have the LIG.pdb, LIG.itp in your working directory.
 
 
 
@@ -79,9 +88,12 @@ arrange them in specific order to avoid errors use "sort_mol2_bonds.pl" script.
 
 
 ----You can also use SIFIMAGE of latest gromacs----
+
 1. Download the SIFIMAGE and place it in ~/.config/sifdir/gromacs_2022.3.sif
+
 2. Now you can use the following command-- "LD_LIBRARY_PATH="" singularity run --nv -B ${PWD}:/workspace ~/.config/sifdir/gromacs_2022.3.sif bash -c "cd /workspace && gmx hbond -s md100_rescale.tpr -f md100_center.xtc -num hb.xvg -tu ns"
 (N.B.: The inverted commas are part of the command in this case, do not remove it)
+
 3. Here you have to replace the 'gmx hbond -s md100_rescale.tpr -f md100_center.xtc -num hb.xvg -tu ns' with your command of interest, such as 'gmx pdb2gmx -f REC.pdb -o REC.gro'.
 
 
