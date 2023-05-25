@@ -211,6 +211,7 @@ Now, make the position restraint file for the ligand.
 	
 	gmx genrestr -f LIG.gro -n index_LIG.ndx -o posre_LIG.itp -fc 1000 1000 1000
 
+(Select group)
 
 	
 	> select group "3"
@@ -239,6 +240,8 @@ Again, Make other Index file for System
 	gmx make_ndx -f em.gro -o index.ndx
 
 (Select Options)
+
+	
 	> 1 | 13
 	> q
 	
@@ -264,6 +267,7 @@ AND THEN
 	
 	gmx mdrun -deffnm npt
 **(For this you have to use "gromacs_npt.pbs" script)**
+
 
 ####### FEW THINGS TO KEEP IN MIND WHILE USING THE npt.mdp FILE #######
 1. Pressure coupling can be changed to anisotropic if required (See references).
