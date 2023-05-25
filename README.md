@@ -162,12 +162,16 @@ TO
 	gmx editconf -f complex.gro -d 1.0 -bt triclinic -o box.gro 
 
 *(You can also change "triclinic" to "dodecahedron" as per your requirement)*
+Next step is the solvation of the complex..
 
 	gmx solvate -cp box.gro -cs spc216.gro -p topol.top -o solv.gro
 
+Then, build the .tpr file for the ions, that will be used for total charge neutralization
+	
 	gmx grompp -f ions.mdp -c solv.gro -p topol.top -o ions.tpr
 
 (OR)
+	
 	gmx grompp -f ions.mdp -c solv.gro -maxwarn 2 -p topol.top -o ions.tpr
 
 *(The "-maxwarn 2" option is sometimes required to ignore the warnings)*
@@ -177,7 +181,8 @@ TO
 
 (Select Option)
 15
-
+Then, go for energy minimization. To build the energy minimization tpr file (em.tpr),
+	
 	gmx grompp -f em.mdp -c solv_ions.gro -p topol.top -o em.tpr
 
 (OR)
@@ -185,7 +190,7 @@ TO
 	gmx grompp -f em.mdp -c solv_ions.gro -maxwarn 2 -p topol.top -o em.tpr
 
 **(The "-maxwarn 2" option is sometimes required to ignore the warnings)**
-
+Then for final energy minimization
 
 	gmx mdrun -v -deffnm em
 
@@ -196,11 +201,18 @@ In that script you can change the walltime, output name, job name as per your re
 Now make index files
  
 	gmx make_ndx -f LIG.gro -o index_LIG.ndx
-	 > 0 & ! a H*
- 	 > q
 
+(Select options)
+	
+	> 0 & ! a H*
+ 	> q
 
+Now, make the position restraint file for the ligand.
+	
 	gmx genrestr -f LIG.gro -n index_LIG.ndx -o posre_LIG.itp -fc 1000 1000 1000
+
+
+	
 	> select group "3"
 
 	
@@ -225,7 +237,8 @@ Again, Make other Index file for System
 
 
 	gmx make_ndx -f em.gro -o index.ndx
-	
+
+(Select Options)
 	> 1 | 13
 	> q
 	
@@ -235,7 +248,8 @@ gedit nvt.mdp (This file is already modified)
 
 	gmx grompp -f nvt.mdp -c em.gro -r em.gro -p topol.top -n index.ndx -maxwarn 2 -o nvt.tpr
 	
-
+AND THEN
+	
 	gmx mdrun -deffnm nvt
 **(For this you can use "gromacs_nvt.pbs" script)**
 
@@ -246,7 +260,8 @@ gedit npt.mdp (This file is already modified)
 
 	gmx grompp -f npt.mdp -c nvt.gro -r nvt.gro -p topol.top -n index.ndx -maxwarn 2 -o npt.tpr
 	
-
+AND THEN
+	
 	gmx mdrun -deffnm npt
 **(For this you have to use "gromacs_npt.pbs" script)**
 
@@ -262,7 +277,8 @@ gedit md.mdp (Change MD RUN TIME as per your need)
 
 	gmx grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -n index.ndx -maxwarn 2 -o md.tpr
 
-
+AND THEN
+	
 	gmx mdrun -deffnm md
 **(For this you can use "md_complex.pbs" script. Remember to change the MD_NAME, Job name, walltime, output filename accordingly)**
 
@@ -325,6 +341,7 @@ gedit md.mdp (Change MD RUN TIME as per your need)
 
 	gmx rms -s md.tpr -f md_center.xtc -o rmsd.xvg
 
+(OR)
 	gmx rms -s md.tpr -f md_center.xtc -o rmsd.xvg -tu ns 
 (Select Options respectively) (Backbone and LIG)
 
@@ -351,6 +368,7 @@ gedit md.mdp (Change MD RUN TIME as per your need)
 
 	gmx hbond -s md.tpr -f md_center.xtc -num hb.xvg
 
+(OR)
 	gmx hbond -s md.tpr -f md_center.xtc -num hb.xvg -tu ns
 
 (Select Option) (Protein and LIG)
