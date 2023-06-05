@@ -148,10 +148,12 @@ SO, IT WILL LOOK LIKE--
 ----- EDIT THE FOLLOWING in lig.itp -----
 
 nano lig.itp
+
 	[ moleculetype ]
 	; Name nrexcl
 	lig_gmx2 3
 TO
+
 	[ moleculetype ]
 	; Name nrexcl
 	LIG 3
