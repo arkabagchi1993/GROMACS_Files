@@ -104,9 +104,9 @@ vii. Make sure now you have the LIG.pdb, LIG.itp in your working directory.
 
 	gmx pdb2gmx -f REC.pdb -ignh
 
-	8 (CHARMM27)
+8 (CHARMM27)
 
-	1 (TIP3P)
+1 (TIP3P)
 
 ## This will generate a file named "conf.gro" ##
 
@@ -378,9 +378,9 @@ You can also find a checkpoint file named "md_prev.cpt".
 
 	gmx rmsf -s md.tpr -f md_center.xtc -o rmsf.xvg
 
-	(Select Option) (Backbone)
+(Select Option) (Backbone)
 
-	4
+4
 
 
 
@@ -409,7 +409,7 @@ For running the same command with Gromacs sifimage
 
 cd to the working directory and then type:
 
-	LD_LIBRARY_PATH="" singularity run --nv -B ${PWD}:/workspace ~/.config/sifdir/gromacs_2022.3.sif bash -c "cd /workspace && gmx hbond -s md.tpr -f md_center.xtc -num hb.svg -tu ns
+	LD_LIBRARY_PATH="" singularity run --nv -B ${PWD}:/workspace ~/.config/sifdir/gromacs_2022.3.sif bash -c "cd /workspace && gmx hbond -s md.tpr -f md_center.xtc -num hb.svg -tu ns"
 
 
 
