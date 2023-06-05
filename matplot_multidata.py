@@ -12,9 +12,9 @@ plt.plot(data2[:, 0], data2[:, 1], label='label of your data2')
 plt.plot(data3[:, 0], data3[:, 1], label='label of your data3')
 
 # Customize the plot
-plt.xlabel('Time (ps)')
-plt.ylabel('RMSD')
-plt.title('RMSD')
+plt.xlabel('Enter title for the x axis')
+plt.ylabel('Enter title for the y axis')
+plt.title('Enter title for the plot')
 plt.legend()
 
 # Display the plot
