@@ -390,6 +390,7 @@ You can also find a checkpoint file named "md_prev.cpt".
 	gmx hbond -s md.tpr -f md_center.xtc -num hb.xvg
 
 (OR)
+
 	gmx hbond -s md.tpr -f md_center.xtc -num hb.xvg -tu ns
 
 (Select Option) (Protein and LIG)
@@ -397,6 +398,18 @@ You can also find a checkpoint file named "md_prev.cpt".
 	1
 
 	13
+
+For running the same command with Gromacs sifimage
+	
+	ssh kuhpcgn1
+
+(OR)
+
+	ssh kuhpcgn2
+
+cd to the working directory and then type:
+
+	LD_LIBRARY_PATH="" singularity run --nv -B ${PWD}:/workspace ~/.config/sifdir/gromacs_2022.3.sif bash -c "cd /workspace && gmx hbond -s md.tpr -f md_center.xtc -num hb.svg -tu ns
 
 
 
