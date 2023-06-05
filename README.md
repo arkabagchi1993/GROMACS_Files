@@ -361,7 +361,9 @@ You can also find a checkpoint file named "md_prev.cpt".
 	gmx rms -s md.tpr -f md_center.xtc -o rmsd.xvg
 
 (OR)
+
 	gmx rms -s md.tpr -f md_center.xtc -o rmsd.xvg -tu ns 
+
 (Select Options respectively) (Backbone and LIG)
 
 	4
