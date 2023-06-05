@@ -292,8 +292,23 @@ AND THEN
 
 **If the run somehow stops, it will generate a checkpoint file (MD_NAME.cpt). You can use this file to run the "resume_md.pbs" script, which will resume the run from the point where it stopped**
 
+If you want to extend the run any further, follow the steps:
+
+Build the tpr file for extended time
+	
+	
+	gmx_mpi convert-tpr -s md_10.tpr -extend 10000 -o md_20.tpr
+
+Change the value after '-extend' accordingly (the value indicates the amount of time increased in picoseconds)
+
+Then run the md-run from the last checkpoint file created:
+	
+	gmx mdrun -v -deffnm md_20 -cpi md_10.cpt -noappend
+
+You can also find a checkpoint file named "md_prev.cpt".
 
 
+#You can use the "extend_md.pbs" for this extension.#
 
 #################################################################################
 #										#
