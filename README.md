@@ -95,9 +95,9 @@ vii. Make sure now you have the LIG.pdb, LIG.itp in your working directory.
 	~/.config/sifdir/gromacs_2022.3.sif
 
 2. Now you can use the following command--
-	
-	
+
 	LD_LIBRARY_PATH="" singularity run --nv -B ${PWD}:/workspace ~/.config/sifdir/gromacs_2022.3.sif bash -c "cd /workspace && gmx hbond -s md100_rescale.tpr -f md100_center.xtc -num hb.xvg -tu ns"
+
 
 (N.B.: The inverted commas are part of the command in this case, do not remove it)
 
