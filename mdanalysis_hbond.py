@@ -2,8 +2,8 @@
 import numpy as np
 import MDAnalysis as mda
 
-xtcfile='md100_center.xtc'
-topfile='md100_rescale.tpr'
+xtcfile='/path/to/xtc_file'
+topfile='path/to/tpr_file'
 u = mda.Universe(topfile, xtcfile)
 
 
@@ -14,8 +14,8 @@ from MDAnalysis.analysis.hydrogenbonds.hbond_analysis import HydrogenBondAnalysi
 gromacs_cutoff = 3.5
 gromacs_cutoff_angle = 150
 
-start_frame = 9199
-end_frame = start_frame + 1
+start_frame = 9199 #number of frame to start
+end_frame = start_frame + 1 #end on the next step
 
 ligand_name = 'resname LIG'
 protein_name = 'protein'
