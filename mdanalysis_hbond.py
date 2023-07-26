@@ -1,4 +1,4 @@
-%%time
+%%time #required for mentioning the total time required for the run
 import numpy as np
 import MDAnalysis as mda
 
@@ -6,8 +6,6 @@ xtcfile='/path/to/xtc_file'
 topfile='path/to/tpr_file'
 u = mda.Universe(topfile, xtcfile)
 
-
-%%time
 from MDAnalysis.analysis.hydrogenbonds.hbond_analysis import HydrogenBondAnalysis as HBA
 
 #See https://manual.gromacs.org/current/reference-manual/analysis/hydrogen-bonds.html
