@@ -173,7 +173,8 @@ nano topol.top
 	below- Include forcefield parameters
 	#include "amberGS.ff/forcefield.itp")
 
-*If you are performing the simulation with Protein-Protein or Protein-DNA/RNA*
+#If you are performing the simulation with Protein-Protein or Protein-DNA/RNA#
+
 Then add,
 	
  	; Include ligand topology
@@ -260,7 +261,7 @@ Now make index files
 	> 0 & ! a H*
  	> q
 
-Now, make the position restraint file for the ligand. It is not always required for Protein-Protein and Protein-DNA/RNA simulation as the "pdb2gmx" already builds a position restraint file for the ligand (which was previously described to rename as "posre_LIG.itp".
+#Now, make the position restraint file for the ligand. It is not always required for Protein-Protein and Protein-DNA/RNA simulation as the "pdb2gmx" already builds a position restraint file for the ligand (which was previously described to rename as "posre_LIG.itp".#
 	
 	gmx genrestr -f LIG.gro -n index_LIG.ndx -o posre_LIG.itp -fc 1000 1000 1000
 
