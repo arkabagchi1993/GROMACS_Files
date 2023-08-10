@@ -275,18 +275,18 @@ Now, open topol.top file
 at the end of the document 
 
 
-		; Include Position restraint file
-		#ifdef POSRES
-		#include "posre.itp"
-		#endif
+	; Include Position restraint file
+	#ifdef POSRES
+	#include "posre.itp"
+	#endif
 	
 Modify it as
 	
-		; Include Position restraint file
-		#ifdef POSRES
-		#include "posre.itp"
-		#include "posre_LIG.itp"
-		#endif
+	; Include Position restraint file
+	#ifdef POSRES
+	#include "posre.itp"
+	#include "posre_LIG.itp"
+	#endif
 
 For Protein-Protein and Protein-DNA/RNA simulation, the posre_LIG.itp file needs to be included at a different place, which is at the top of the file where,
 
