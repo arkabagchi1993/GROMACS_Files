@@ -119,6 +119,39 @@ vii. Make sure now you have the LIG.pdb, LIG.itp in your working directory.
 
 	gmx editconf -f LIG.pdb -o LIG.gro
 
+# If you are simulating Protein-Protein or Protein-DNA/RNA then #
+
+Generate the LIgand topology with
+	
+ 	gmx pdb2gmx -f LIG.pdb -o LIG.gro -ignh
+
+This will generate three files, LIG.gro, posre.itp and topol.top. Now rename the posre.itp as "posre_LIG.itp" and topol.top as "LIG.top"
+Now edit the LIG.top file as described below:
+Remove from the top of the file,
+	
+ 	; Include forcefield parameters
+ 	#include amberGS.f/forcefiled.itp"
+And remove from the bottom of the file the protein mentioned below, this will ensure that no itp file is called twice, as they are already called at the topol.top file.
+	
+ 	; Include Position restraint file
+	#ifdef POSRES
+	#include "posre.itp"
+	#endif
+
+	; Include water topology
+	#include "amber96.ff/tip3p.itp"
+
+	#ifdef POSRES_WATER
+	; Position restraint for each water oxygen
+	[ position_restraints ]
+	;  i funct	 fcx        fcy        fcz
+   	1    1	1000	   1000       1000
+	#endif
+
+	; Include topology for ions
+	#include "amber96.ff/ions.itp"
+
+
 ## Now you have to copy the "conf.gro" and "LIG.gro" file into a "complex.gro" file ##
 To do that, follow the steps-----
 	1. Type "cp ./conf.gro ./complex.gro  (This will make a copy the "conf.gro" and name it as "complex.gro")
@@ -140,10 +173,23 @@ nano topol.top
 	below- Include forcefield parameters
 	#include "amberGS.ff/forcefield.itp")
 
+*If you are performing the simulation with Protein-Protein or Protein-DNA/RNA*
+Then add,
+	
+ 	; Include ligand topology
+ 	#include "LIG.top"
+
+below
+	
+ 	; Include forcefield parameters
+ 	#include "amberGS.ff/forcefield.itp"
+
+
 AT THE BOTTOM OF THE SAME FILE PERFORM FOLLOWING CHANGES
 (add LIG 1
 align exactly below-
-	Protein_chain_A     1)
+	
+ 	Protein_chain_A     1)
 
 SO, IT WILL LOOK LIKE--
 	
@@ -152,9 +198,7 @@ SO, IT WILL LOOK LIKE--
 
 
 
------ EDIT THE FOLLOWING in lig.itp -----
-
-nano lig.itp
+----- EDIT THE FOLLOWING in lig.itp  or LIG.top-----
 
 	[ moleculetype ]
 	; Name nrexcl
@@ -216,7 +260,7 @@ Now make index files
 	> 0 & ! a H*
  	> q
 
-Now, make the position restraint file for the ligand.
+Now, make the position restraint file for the ligand. It is not always required for Protein-Protein and Protein-DNA/RNA simulation as the "pdb2gmx" already builds a position restraint file for the ligand (which was previously described to rename as "posre_LIG.itp".
 	
 	gmx genrestr -f LIG.gro -n index_LIG.ndx -o posre_LIG.itp -fc 1000 1000 1000
 
@@ -235,13 +279,27 @@ at the end of the document
 		#include "posre.itp"
 		#endif
 	
-	Modify it as
+Modify it as
 	
 		; Include Position restraint file
 		#ifdef POSRES
 		#include "posre.itp"
 		#include "posre_LIG.itp"
 		#endif
+
+For Protein-Protein and Protein-DNA/RNA simulation, the posre_LIG.itp file needs to be included at a different place, which is at the top of the file where,
+
+	; Include ligand topology
+ 	#include "LIG.top"
+
+is mentioned. Modify it as,
+
+	; Include ligand topology
+ 	#include "LIG.top
+  	#Ifdef POSRES
+   	#include "posre_LIG.itp"
+    	#endif
+
 
 Again, Make other Index file for System 
 
