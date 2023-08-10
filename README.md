@@ -173,7 +173,7 @@ nano topol.top
 	below- Include forcefield parameters
 	#include "amberGS.ff/forcefield.itp")
 
-#If you are performing the simulation with Protein-Protein or Protein-DNA/RNA#
+# If you are performing the simulation with Protein-Protein or Protein-DNA/RNA #
 
 Then add,
 	
