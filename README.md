@@ -234,7 +234,8 @@ Then, build the .tpr file for the ions, that will be used for total charge neutr
 	gmx genion -s ions.tpr -p topol.top -conc 0.1 -neutral -o solv_ions.gro
 
 (Select Option)
-15
+
+	15
 Then, go for energy minimization. To build the energy minimization tpr file (em.tpr),
 	
 	gmx grompp -f em.mdp -c solv_ions.gro -p topol.top -o em.tpr
@@ -314,7 +315,21 @@ Again, Make other Index file for System
 	> q
 	
 --------------------[NVT MINIMIZATION]------------------------
-gedit nvt.mdp (This file is already modified)
+Remember to edit the *nvt.mdp* file to insert proper tc coupling groups.
+For Protein-Ligand simulation, choose tc groups as 
+
+	Protein_LIG Water_and_ions
+For Protein-DNA simulation, choose tc groups as
+
+	Protein_DNA Water_and_ions
+For Protein-RNA simulation, choose rc groups as 
+
+	Protein_RNA Water_and_ions
+For Protein in water (Protein only) simulation, choose tc groups as
+
+	Protein Non-protein
+
+Then use the following command to generate *nvt.tpr* file
 
 
 	gmx grompp -f nvt.mdp -c em.gro -r em.gro -p topol.top -n index.ndx -maxwarn 2 -o nvt.tpr
@@ -326,8 +341,21 @@ AND THEN
 
 
 --------------------[NPT MINIMIZATION]-----------------------
-gedit npt.mdp (This file is already modified)
+Remember to edit the *npt.mdp* file to insert proper tc coupling groups.
+For Protein-Ligand simulation, choose tc groups as 
 
+	Protein_LIG Water_and_ions
+For Protein-DNA simulation, choose tc groups as
+
+	Protein_DNA Water_and_ions
+For Protein-RNA simulation, choose rc groups as 
+
+	Protein_RNA Water_and_ions
+For Protein in water (Protein only) simulation, choose tc groups as
+
+	Protein Non-protein
+
+Then use the following command to generate *npt.tpr* file
 
 	gmx grompp -f npt.mdp -c nvt.gro -r nvt.gro -p topol.top -n index.ndx -maxwarn 2 -o npt.tpr
 	
@@ -360,6 +388,8 @@ AND THEN
 
 **If the run somehow stops, it will generate a checkpoint file (MD_NAME.cpt). You can use this file to run the "resume_md.pbs" script, which will resume the run from the point where it stopped**
 
+-----------------[EXTEND MD RUN FROM LAST CHECKPOINT]-----------
+
 If you want to extend the run any further, follow the steps:
 
 Build the tpr file for extended time
@@ -376,7 +406,7 @@ Then run the md-run from the last checkpoint file created:
 You can also find a checkpoint file named "md_prev.cpt".
 
 
-#You can use the "extend_md.pbs" for this extension.#
+**You can use the "extend_md.pbs" for this extension.**
 
 #################################################################################
 #										#
@@ -450,7 +480,10 @@ You can also find a checkpoint file named "md_prev.cpt".
 
 4
 
+**(OR)**
+For residue specific RMSF calculation, use:
 
+	gmx rmsf -s md.tpr -f md_center.xtc -o rmsf.xvg -res
 
 
 -----------h-bonds-------------------
@@ -477,7 +510,7 @@ For running the same command with Gromacs sifimage
 
 cd to the working directory and then type:
 
-	LD_LIBRARY_PATH="" singularity run --nv -B ${PWD}:/workspace ~/.config/sifdir/gromacs_2022.3.sif bash -c "cd /workspace && gmx hbond -s md.tpr -f md_center.xtc -num hb.svg -tu ns"
+	LD_LIBRARY_PATH="" singularity run --nv -B ${PWD}:/workspace ~/.config/sifdir/gromacs_2022.3.sif bash -c "cd /workspace && gmx hbond -s md.tpr -f md_center.xtc -num hb.xvg -tu ns"
 
 
 
@@ -487,8 +520,7 @@ cd to the working directory and then type:
 
 #Choose the group of your choice
 
-
-
+	4
 
 -------------ENERGY Calculations---------------
 
@@ -508,8 +540,9 @@ cd to the working directory and then type:
 -------------- With Grace in Linux ----------------------------
 1. Download the xvg files in your local computer.
 2. Open Terminal and cd to the folder where you downloaded the files.
-3. Type 
-	xmgrace <filename>.xvg
+3. Type
+
+		xmgrace <filename>.xvg
 
 
 -------------- With Matplot (Jupyter notebook)-----------------
