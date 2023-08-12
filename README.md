@@ -241,7 +241,7 @@ Next step is the solvation of the complex..
 
 	15
 
-# Energy Minimization #
+# [Energy Minimization] #
 Then, go for energy minimization. To build the energy minimization tpr file (em.tpr),
 	
 	gmx grompp -f em.mdp -c solv_ions.gro -p topol.top -o em.tpr
@@ -428,10 +428,6 @@ You can also find a checkpoint file named "md_prev.cpt".
 #										#
 #################################################################################
 
-
-
-
-########################################################################################
 ----------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------
@@ -456,7 +452,7 @@ You can also find a checkpoint file named "md_prev.cpt".
 	gmx trjconv -s md.tpr -f md.xtc -o md_center.xtc -center -pbc mol -ur compact
 #Choose "Protein" for centering and "System" for output.
 
-**Point to Note if you are extending a simulation**
+# Point to Note if you are extending a simulation #
 
 
 As described earlier, extending a MD simulation involves extending the md.tpr file with *convert-tpr* option. After extending the run with *-noappend* (using extend_md.pbs script), you need to concentrate the new trajectory (which in this case will be named something like "md_20.part0002.xtc" with the existing one, using *gmx trjcat*. Use the following command for that:
@@ -478,7 +474,7 @@ After that you can proceed for centering with the previously mentioned command.
 
 
 
-# RMSD Calculations #
+# [RMSD Calculations] #
 
 	gmx rms -s md.tpr -f md_center.xtc -o rmsd.xvg
 
@@ -496,7 +492,7 @@ After that you can proceed for centering with the previously mentioned command.
 
 
 
-# RMSF Calculations #
+# [RMSF Calculations] #
 
 	gmx rmsf -s md.tpr -f md_center.xtc -o rmsf.xvg
 
@@ -510,7 +506,7 @@ For residue specific RMSF calculation, use:
 	gmx rmsf -s md.tpr -f md_center.xtc -o rmsf.xvg -res
 
 
-# Calculating No.of h-bonds #
+# [Calculating No.of h-bonds] #
 
 	gmx hbond -s md.tpr -f md_center.xtc -num hb.xvg
 
@@ -524,7 +520,7 @@ For residue specific RMSF calculation, use:
 
 	13
 
-**For running the same command with Gromacs sifimage**
+# For running the hbond with Gromacs sifimage #
 	
 	ssh kuhpcgn1
 
@@ -539,7 +535,7 @@ cd to the working directory and then type:
 Then select options
 
 
-# Calculation of Gyration Radius #
+# [Calculation of Gyration Radius] #
 
 	gmx gyrate -s md.tpr -f md_center.xtc -o gyrate1.xvg
 
@@ -547,7 +543,7 @@ Then select options
 
 	4
 
-# ENERGY Calculations #
+# [ENERGY Calculations] #
 
 	gmx energy -f md.edr -o energy1.xvg
 
