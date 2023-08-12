@@ -1,32 +1,30 @@
 **###GROMACS UNIVERSAL TUTORIAL###**
 
 # Basics of KUHPC #
-1. ssh <id>@182.16.16.10 (from your Terminal (Linux) or Powershell (Windows)
-2. create a directory (which will be your working directory) by "mkdir <directory name>"
-3. enter the directory by "cd <directory name>"
+1. `ssh <id>@182.16.16.10` (from your Terminal (Linux) or Powershell (Windows)
+2. create a directory (which will be your working directory) by `mkdir <directory name>`
+3. enter the directory by `cd <directory name>`
 4. Upload essential files like the .pbs files (pbs scripts), .mdp files (provided in the gromacs tutorial) and .pdb files (of the receptor and ligand) by WinSCP (for windows) or SFTP (Linux).
-5. You can list the files in your directory by typinf "ls".
-6. To remove any file type "rm <filename>".
+5. You can list the files in your directory by typinf `ls`.
+6. To remove any file type `rm <filename>`.
+7. To copy files type `cp /path/to/source/file /path/to/destination/file`
+8. To rename or move files type `mv /path/tp/source/file /path/to/destination/file`
 
 
 
 # REQUIRED-SOFTWARES-FOR-GROMACS #
-#									#
+#########################################################################
 -	For adding hydrogens to the ligand and export .mol2 file 	-
 -	Install Avogadro						-
-#									#
 ######################################################################### 
 -	For visualization of .pdb and .gro files			-
 -	Install PyMol							-
-#									#
 #########################################################################
--	For final MD trajectory visualization				-
--  Install VMD (Requires high spec computer for proper visualization	-
-#									#
+-	For final MD trajectory visualization				-	
+-	Install VMD (Requires high spec computer for proper visualization
 #########################################################################
 -	For xvg file visualization					-
 -	Install grace (for Linux)					-
-#									#
 #########################################################################
 -	Use Matplot (from jupyter notebook) (for Windows/Linux)		-
 -	(Detailed instructions given below)				-
@@ -67,11 +65,11 @@ arrange them in specific order to avoid errors use "sort_mol2_bonds.pl" script.
 	
 i. In your working directory, type `wget <URL of the Swissparam result page>` (This will download a file named "index.html".
 
-ii. Open this index.html file with "nano" or any other text editor of your choice. To open the file with nano, type "nano index.html".
+ii. Open this index.html file with "nano" or any other text editor of your choice. To open the file with nano, type `nano index.html`.
 
-iii. In this file, you will find a line, ""Results can be found in the following zip file: <a class="sib_link"href="http://www.swissparam.ch/results/514710792/<filename>.zip"><filename>.zip</a>. <br><br>"".
+iii. In this file, you will find a line, `Results can be found in the following zip file: <a class="sib_link"href="http://www.swissparam.ch/results/514710792/<filename>.zip"><filename>.zip</a>. <br><br>`.
 
-(Where 'filename' will be the name of your .mol2 file). From this line copy the ""http://www.swissparam.ch/results/514710792/<filename>.zip"" part.
+(Where 'filename' will be the name of your .mol2 file). From this line copy the `http://www.swissparam.ch/results/514710792/<filename>.zip` part.
 
 iv. Now exit the text editor and in your working directory, type `wget <the link you just copied>` (Eg: wget http://www.swissparam.ch/results/514710792/LIG.zip)
 
@@ -107,7 +105,7 @@ vii. Make sure now you have the LIG.pdb, LIG.itp in your working directory.
 
 **(N.B.: The inverted commas are part of the command in this case, do not remove it)**
 
-3. Here you have to replace the `gmx hbond -s md100_rescale.tpr -f md100_center.xtc -num hb.xvg -tu ns` with your command of interest, such as 'gmx pdb2gmx -f REC.pdb -o REC.gro'.
+3. Here you have to replace the `gmx hbond -s md100_rescale.tpr -f md100_center.xtc -num hb.xvg -tu ns` with your command of interest, such as `gmx pdb2gmx -f REC.pdb -o REC.gro`.
 
 
 
@@ -119,11 +117,13 @@ vii. Make sure now you have the LIG.pdb, LIG.itp in your working directory.
 
 	gmx pdb2gmx -f REC.pdb -ignh
 
-8 (CHARMM27)
 
-1 (TIP3P)
+	8 (CHARMM27)
 
-**This will generate a file named "conf.gro".** You can also specify the name of the output gro file by "-o name.gro" option.
+
+	1 (TIP3P)
+
+**This will generate a file named "conf.gro".** You can also specify the name of the output gro file by `-o name.gro` option.
 
 	gmx editconf -f LIG.pdb -o LIG.gro
 
@@ -163,11 +163,11 @@ And remove from the bottom of the file the protein mentioned below, this will en
 # Build the .gro file for the complex #
 **Now you have to copy the "conf.gro" and "LIG.gro" file into a "complex.gro" file**
 To do that, follow the steps-----
-	1. Type "cp ./conf.gro ./complex.gro  (This will make a copy the "conf.gro" and name it as "complex.gro")
-	2. Now open LIG.gro file in text editor by typing "nano LIG.gro" and copy from the third line of the file to the second last line of the file.
-	3. To open the "complex.gro" file in text editor, type "nano complex.gro"
-	4. Now go to the last line of the file, you will find some numbers (cordinates) written there. Place the cursor there and paste the copied part from the LIG.gro file.
-	5. Now, you will find a 'molecule number' at the top of each conf.gro and LIG.gro files (mentioned as just numbers, such as 4265 in case of conf.gro and 60 in case of LIG.gro). Add these to numbers (which will be for eg. 4285) and simply replace the molecule number of "complex.gro" file with the added value.
+	1. Type `cp ./conf.gro ./complex.gro`  (This will make a copy the "conf.gro" and name it as "complex.gro")
+	2. Now open LIG.gro file in text editor by typing `nano LIG.gro` and copy from the third line of the file to the second last line of the file.
+	3. To open the "complex.gro" file in text editor, type `nano complex.gro`
+	4. Now go to the last line of the file, you will find some numbers (cordinates) written there. Place the cursor there and paste the copied part from the LIG.gro file. OR you can just place the cursor at the described place and type `Ctrl+R` and the `LIG.gro` and press enter. This will insert the whole `LIG.gro` file there. Then you just have to remove the unnecessary lines.
+	5. Now, you will find a `molecule number` at the top of each conf.gro and LIG.gro files (mentioned as just numbers, such as 4265 in case of conf.gro and 60 in case of LIG.gro). Add these to numbers (which will be for eg. 4285) and simply replace the molecule number of "complex.gro" file with the added value.
 	
 	
 *(You can check the receptor and ligand by downloading the "complex.gro" and opening it in PyMol)*
@@ -196,7 +196,7 @@ below
 
 
 AT THE BOTTOM OF THE SAME FILE PERFORM FOLLOWING CHANGES
-(add LIG 1
+(add `LIG 1`
 align exactly below-
 	
  	Protein_chain_A     1)
@@ -218,13 +218,13 @@ TO
 	[ moleculetype ]
 	; Name nrexcl
 	LIG 3
-*(in certain cases this will already be LIG 3 so for such case no change is needed)*
+*(in certain cases this will already be `LIG 3` so for such case no change is needed)*
 
 ----------
 
 	gmx editconf -f complex.gro -d 1.0 -bt triclinic -o box.gro 
 
-*(You can also change "triclinic" to "dodecahedron" as per your requirement)*
+*(You can also change `triclinic` to `dodecahedron` as per your requirement)*
 Next step is the solvation of the complex..
 
 	gmx solvate -cp box.gro -cs spc216.gro -p topol.top -o solv.gro
@@ -255,7 +255,7 @@ Then, go for energy minimization. To build the energy minimization tpr file (em.
 	
 	gmx grompp -f em.mdp -c solv_ions.gro -maxwarn 2 -p topol.top -o em.tpr
 
-**(The "-maxwarn 2" option is sometimes required to ignore the warnings)**
+**(The `-maxwarn 2` option is sometimes required to ignore the warnings)**
 Then for final energy minimization
 
 	gmx mdrun -v -deffnm em
@@ -358,7 +358,7 @@ AND THEN
 
 
 # [NPT MINIMIZATION] #
-Remember to edit the *npt.mdp* file to insert proper tc coupling groups.
+Remember to edit the `npt.mdp` file to insert proper tc coupling groups.
 For Protein-Ligand simulation, choose tc groups as 
 
 	Protein_LIG Water_and_ions
@@ -372,7 +372,7 @@ For Protein in water (Protein only) simulation, choose tc groups as
 
 	Protein Non-protein
 
-Then use the following command to generate *npt.tpr* file
+Then use the following command to generate `npt.tpr` file
 
 	gmx grompp -f npt.mdp -c nvt.gro -r nvt.gro -p topol.top -n index.ndx -maxwarn 2 -o npt.tpr
 	
@@ -383,14 +383,14 @@ AND THEN
 
 
 # FEW THINGS TO KEEP IN MIND WHILE USING THE `npt.mdp` and `md.mdp` FILE #
-1. Pressure coupling can be changed to anisotropic if required (See references).
-2. Refcoord scaling can be removed if required.
+1. Pressure coupling can be changed to `anisotropic` if required (See references).
+2. `Refcoord scaling` can be removed if required.
 3. There are several other pressure coupling groups that can be applied with gromacs. You can utilize them as per your requirement.
 
 
 # [FINAL MD RUN/PRODUCTION] #
-gedit md.mdp (Change MD RUN TIME as per your need)
--	Check for all the parameters in the md.mdp file to match the previously used nvt.mdp and npt.mdp files.		-
+`nano md.mdp` (Change MD RUN TIME as per your need)
+-	Check for all the parameters in the `md.mdp` file to match the previously used `nvt.mdp` and `npt.mdp` files.		-
 
 
 
@@ -399,13 +399,13 @@ gedit md.mdp (Change MD RUN TIME as per your need)
 AND THEN
 	
 	gmx mdrun -deffnm md
-**(For this you can use "md_complex.pbs" script. Remember to change the MD_NAME, Job name, walltime, output filename accordingly)**
+**(For this you can use `md_complex.pbs` script. Remember to change the MD_NAME, Job name, walltime, output filename accordingly)**
 
 
 
 # [RESUME MD RUN FROM CHECKPOINT] #
 
-**If the run somehow stops, it will generate a checkpoint file (MD_NAME.cpt). You can use this file to run the `resume_md.pbs` script, which will resume the run from the point where it stopped**
+**If the run somehow stops, it will generate a checkpoint file (`MD_NAME.cpt`). You can use this file to run the `resume_md.pbs` script, which will resume the run from the point where it stopped**
 
 # [EXTEND MD RUN FROM LAST CHECKPOINT] #
 
@@ -429,7 +429,7 @@ You can also find a checkpoint file named `md_prev.cpt`.
 
 #################################################################################
 #										#
-# THIS IS THE END OF FINAL MD RUN #						#
+# THIS IS THE END OF FINAL MD RUN #						
 #										#
 #################################################################################
 
@@ -442,7 +442,7 @@ You can also find a checkpoint file named `md_prev.cpt`.
 
 #################################################################################
 #										#
-# POST-PROCESSING #								#
+# POST-PROCESSING #								
 #										#
 #################################################################################
 
@@ -451,7 +451,7 @@ You can also find a checkpoint file named `md_prev.cpt`.
 # [Recentering and Rewrapping Coordinates] #
 
 	gmx trjconv -s md.tpr -f md.xtc -o md_center.xtc -center -pbc mol -ur compact
-#Choose "Protein" for centering and "System" for output.
+#Choose `Protein` for centering and `System` for output.
 
 # Point to Note if you are extending a simulation #
 
@@ -464,11 +464,11 @@ After that you can proceed for centering with the previously mentioned command.
 
 
 # Dumping pdb at different time frames #
-#To extract the first frame (t = 0 ns) of the trajectory, use trjconv -dump with the recentered trajectory:
+#To extract the first frame (t = 0 ns) of the trajectory, use `trjconv` and  `-dump` with the recentered trajectory:
 
 	gmx trjconv -s md.tpr -f md_center.xtc -o start.pdb -dump 0
 (Here "0" refers to 0 picoseconds)
-#To extract any time point frame (such as t = 10 ns) of the trajectory, use trjconv -dump with the recentered trajectory:
+#To extract any time point frame (such as t = 10 ns) of the trajectory, use `trjconv` and `-dump` with the recentered trajectory:
 
 	gmx trjconv -s md.tpr -f md_center.xtc -o start.pdb -dump 10000
 (Here "10000" means 10000 picoseconds = 10 ns)
@@ -483,12 +483,12 @@ After that you can proceed for centering with the previously mentioned command.
 
 	gmx rms -s md.tpr -f md_center.xtc -o rmsd.xvg -tu ns 
 
-(Select Options respectively) (Backbone and LIG)
+(Select Options respectively) (Backbone and Backbone)
 
 	4
 
 	4
-**(Here "-tu ns" option ensures time unit to be ns)**
+**(Here `-tu ns` option ensures time unit to be ns)**
 
 
 
@@ -554,23 +554,23 @@ Then select options
 
 
 #########################################################################
-# Visualization of xvg files #						#
+# Visualization of xvg files #						
 #########################################################################
 
 
 
 -------------- With Grace in Linux ----------------------------
 1. Download the xvg files in your local computer.
-2. Open Terminal and cd to the folder where you downloaded the files.
+2. Open Terminal and `cd` to the folder where you downloaded the files.
 3. Type
 
 		xmgrace <filename>.xvg
 
 
 -------------- With Matplot (Jupyter notebook)-----------------
-1. Install jupyter notebook in a conda environment by typing, "conda install jupyter notebook".
+1. Install jupyter notebook in a conda environment by typing, `conda install jupyter notebook`.
 2. Open jupyter notebook and open Python3 kernel (from 'New').
-3. Paste the lines in the "Matplot.py" and click 'run'.
+3. Paste the lines in the `Matplot.py` and click `run`.
 (Change the filename, x label, y label and title of plot according to your requirement)
 
 
