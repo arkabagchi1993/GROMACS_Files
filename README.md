@@ -13,26 +13,36 @@
 
 
 # REQUIRED-SOFTWARES-FOR-GROMACS #
+
 #########################################################################
 -	For adding hydrogens to the ligand and export .mol2 file 	-
 -	Install Avogadro						-
+
 ######################################################################### 
+#########################################################################
 -	For visualization of .pdb and .gro files			-
 -	Install PyMol							-
+
+#########################################################################
 #########################################################################
 -	For final MD trajectory visualization				-	
 -	Install VMD (Requires high spec computer for proper visualization
+
+#########################################################################
 #########################################################################
 -	For xvg file visualization					-
 -	Install grace (for Linux)					-
+
 #########################################################################
 -	Use Matplot (from jupyter notebook) (for Windows/Linux)		-
 -	(Detailed instructions given below)				-
+
 #########################################################################
 -	If you are simulating a protein with side chains, sometimes fixing of side-chains is required, otherwise `gmx pdb2gmx` gives an error
 -	For that install spdbv software (Swiss PDB Viewer Software)
 -	There you can fix the side chains from 'tools'
 -	This software is available for windows and mac and not for linux.
+
 #########################################################################
 
 
