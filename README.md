@@ -12,8 +12,8 @@
 
 ###################REQUIRED-SOFTWARES-FOR-GROMACS########################
 #									#
-#	For adding hydrogens to the ligand and export .mol2 file 	#
-#			Install Avogadro				#
+-	For adding hydrogens to the ligand and export .mol2 file 	-
+-	Install Avogadro						-
 #									#
 ######################################################################### 
 #	For visualization of .pdb and .gro files			#
