@@ -1,6 +1,6 @@
-###GROMACS UNIVERSAL TUTORIAL###
+**###GROMACS UNIVERSAL TUTORIAL###**
 
-############################Basics of KUHPC##############################
+# Basics of KUHPC #
 1. ssh <id>@182.16.16.10 (from your Terminal (Linux) or Powershell (Windows)
 2. create a directory (which will be your working directory) by "mkdir <directory name>"
 3. enter the directory by "cd <directory name>"
