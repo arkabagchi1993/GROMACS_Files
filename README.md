@@ -443,6 +443,8 @@ You can also find a checkpoint file named "md_prev.cpt".
 #Choose "Protein" for centering and "System" for output.
 
 **Point to Note if you are extending a simulation**
+
+
 As described earlier, extending a MD simulation involves extending the md.tpr file with *convert-tpr* option. After extending the run with *-noappend* (using extend_md.pbs script), you need to concentrate the new trajectory (which in this case will be named something like "md_20.part0002.xtc" with the existing one, using *gmx trjcat*. Use the following command for that:
 
 	gmx trjcat -f md_10.xtc md_20.part0002.xtc -o md_20.xtc
@@ -473,7 +475,7 @@ After that you can proceed for centering with the previously mentioned command.
 
 	4
 
-	13
+	4
 **(Here "-tu ns" option ensures time unit to be ns)**
 
 
@@ -485,7 +487,7 @@ After that you can proceed for centering with the previously mentioned command.
 
 (Select Option) (Backbone)
 
-4
+	4
 
 **(OR)**
 For residue specific RMSF calculation, use:
@@ -501,7 +503,7 @@ For residue specific RMSF calculation, use:
 
 	gmx hbond -s md.tpr -f md_center.xtc -num hb.xvg -tu ns
 
-(Select Option) (Protein and LIG)
+(Select Option) (Protein and LIG) **(Options may change depending on the run, such as 4 & 12 for Protein-DNA/RNA simulation)**
 
 	1
 
@@ -519,6 +521,7 @@ cd to the working directory and then type:
 
 	LD_LIBRARY_PATH="" singularity run --nv -B ${PWD}:/workspace ~/.config/sifdir/gromacs_2022.3.sif bash -c "cd /workspace && gmx hbond -s md.tpr -f md_center.xtc -num hb.xvg -tu ns"
 
+Then select options
 
 
 --------------Gyration Radius------------------
