@@ -31,7 +31,7 @@
 -	Use Matplot (from jupyter notebook) (for Windows/Linux)		-
 -	(Detailed instructions given below)				-
 #########################################################################
--	If you are simulating a protein with side chains, sometimes fixing of side-chains is required, otherwise '''gmx pdb2gmx''' gives an error
+-	If you are simulating a protein with side chains, sometimes fixing of side-chains is required, otherwise `gmx pdb2gmx` gives an error
 -	For that install spdbv software (Swiss PDB Viewer Software)
 -	There you can fix the side chains from 'tools'
 -	This software is available for windows and mac and not for linux.
@@ -65,7 +65,7 @@ arrange them in specific order to avoid errors use "sort_mol2_bonds.pl" script.
 4. Download the .zip folder
 (Sometimes you will not be able to download the .zip file, then follow these instructions:
 	
-i. In your working directory, type "wget <URL of the Swissparam result page> (This will download a file named "index.html".
+i. In your working directory, type `wget <URL of the Swissparam result page>` (This will download a file named "index.html".
 
 ii. Open this index.html file with "nano" or any other text editor of your choice. To open the file with nano, type "nano index.html".
 
@@ -73,7 +73,7 @@ iii. In this file, you will find a line, ""Results can be found in the following
 
 (Where 'filename' will be the name of your .mol2 file). From this line copy the ""http://www.swissparam.ch/results/514710792/<filename>.zip"" part.
 
-iv. Now exit the text editor and in your working directory, type "wget <the link you just copied>" (Eg: wget http://www.swissparam.ch/results/514710792/LIG.zip)
+iv. Now exit the text editor and in your working directory, type `wget <the link you just copied>` (Eg: wget http://www.swissparam.ch/results/514710792/LIG.zip)
 
 v. This will now download a .zip file
 
@@ -90,7 +90,7 @@ vii. Make sure now you have the LIG.pdb, LIG.itp in your working directory.
 
 #########################################################################
 -	In KUHPC, Gromacs runs as MPI, so for each command to work, 	-
--	you have to initiate the "gmx" command as "gmx_mpi".		-
+-	you have to initiate the `gmx` command as `gmx_mpi`.		-
 #########################################################################
 
 
@@ -107,7 +107,7 @@ vii. Make sure now you have the LIG.pdb, LIG.itp in your working directory.
 
 **(N.B.: The inverted commas are part of the command in this case, do not remove it)**
 
-3. Here you have to replace the 'gmx hbond -s md100_rescale.tpr -f md100_center.xtc -num hb.xvg -tu ns' with your command of interest, such as 'gmx pdb2gmx -f REC.pdb -o REC.gro'.
+3. Here you have to replace the `gmx hbond -s md100_rescale.tpr -f md100_center.xtc -num hb.xvg -tu ns` with your command of interest, such as 'gmx pdb2gmx -f REC.pdb -o REC.gro'.
 
 
 
@@ -173,7 +173,7 @@ To do that, follow the steps-----
 *(You can check the receptor and ligand by downloading the "complex.gro" and opening it in PyMol)*
 
 # EDIT THE FOLLOWING in topol.top #
-nano topol.top
+`nano topol.top`
 add 
 
 	; Include ligand topology 
@@ -237,7 +237,7 @@ Next step is the solvation of the complex..
 	
 	gmx grompp -f ions.mdp -c solv.gro -maxwarn 2 -p topol.top -o ions.tpr
 
-*(The "-maxwarn 2" option is sometimes required to ignore the warnings)*
+*(The `-maxwarn 2` option is sometimes required to ignore the warnings)*
 
 
 	gmx genion -s ions.tpr -p topol.top -conc 0.1 -neutral -o solv_ions.gro
@@ -260,7 +260,7 @@ Then for final energy minimization
 
 	gmx mdrun -v -deffnm em
 
-**(For this you can use the "gromacs_em.pbs" script)**
+**(For this you can use the `gromacs_em.pbs` script)**
 In that script you can change the walltime, output name, job name as per your requirement.
 
 # Making index file for ligand #
@@ -275,7 +275,7 @@ Now make index files
 
 # Making the position restraint file for the ligand #
 
-#Now, make the position restraint file for the ligand. It is not always required for Protein-Protein and Protein-DNA/RNA simulation as the "pdb2gmx" already builds a position restraint file for the ligand (which was previously described to rename as "posre_LIG.itp".#
+#Now, make the position restraint file for the ligand. It is not always required for Protein-Protein and Protein-DNA/RNA simulation as the `gmx pdb2gmx` already builds a position restraint file for the ligand (which was previously described to rename as "posre_LIG.itp".#
 	
 	gmx genrestr -f LIG.gro -n index_LIG.ndx -o posre_LIG.itp -fc 1000 1000 1000
 
@@ -332,7 +332,7 @@ is mentioned. Modify it as,
 	> 1 | 12
  	> q
 # [NVT MINIMIZATION] #
-**Remember to edit the *nvt.mdp* file to insert proper tc coupling groups.**
+**Remember to edit the `nvt.mdp` file to insert proper tc coupling groups.**
 For Protein-Ligand simulation, choose tc groups as 
 
 	Protein_LIG Water_and_ions
@@ -354,7 +354,7 @@ Then use the following command to generate *nvt.tpr* file
 AND THEN
 	
 	gmx mdrun -deffnm nvt
-**(For this you can use "gromacs_nvt.pbs" script)**
+**(For this you can use `gromacs_nvt.pbs` script)**
 
 
 # [NPT MINIMIZATION] #
@@ -379,10 +379,10 @@ Then use the following command to generate *npt.tpr* file
 AND THEN
 	
 	gmx mdrun -deffnm npt
-**(For this you have to use "gromacs_npt.pbs" script)**
+**(For this you have to use `gromacs_npt.pbs` script)**
 
 
-# FEW THINGS TO KEEP IN MIND WHILE USING THE npt.mdp and md.mdp FILE #
+# FEW THINGS TO KEEP IN MIND WHILE USING THE `npt.mdp` and `md.mdp` FILE #
 1. Pressure coupling can be changed to anisotropic if required (See references).
 2. Refcoord scaling can be removed if required.
 3. There are several other pressure coupling groups that can be applied with gromacs. You can utilize them as per your requirement.
@@ -405,7 +405,7 @@ AND THEN
 
 # [RESUME MD RUN FROM CHECKPOINT] #
 
-**If the run somehow stops, it will generate a checkpoint file (MD_NAME.cpt). You can use this file to run the "resume_md.pbs" script, which will resume the run from the point where it stopped**
+**If the run somehow stops, it will generate a checkpoint file (MD_NAME.cpt). You can use this file to run the `resume_md.pbs` script, which will resume the run from the point where it stopped**
 
 # [EXTEND MD RUN FROM LAST CHECKPOINT] #
 
@@ -416,16 +416,16 @@ Build the tpr file for extended time
 	
 	gmx_mpi convert-tpr -s md_10.tpr -extend 10000 -o md_20.tpr
 
-Change the value after '-extend' accordingly (the value indicates the amount of time increased in picoseconds)
+Change the value after `-extend` accordingly (the value indicates the amount of time increased in picoseconds)
 
 Then run the md-run from the last checkpoint file created:
 	
 	gmx mdrun -v -deffnm md_20 -cpi md_10.cpt -noappend
 
-You can also find a checkpoint file named "md_prev.cpt".
+You can also find a checkpoint file named `md_prev.cpt`.
 
 
-**You can use the "extend_md.pbs" for this extension.**
+**You can use the `extend_md.pbs` for this extension.**
 
 #################################################################################
 #										#
@@ -437,10 +437,6 @@ You can also find a checkpoint file named "md_prev.cpt".
 
 ----------------------------------------------------------------------------------------
 ########################################################################################
-
-
-
-
 
 
 
@@ -460,7 +456,7 @@ You can also find a checkpoint file named "md_prev.cpt".
 # Point to Note if you are extending a simulation #
 
 
-As described earlier, extending a MD simulation involves extending the md.tpr file with *convert-tpr* option. After extending the run with *-noappend* (using extend_md.pbs script), you need to concentrate the new trajectory (which in this case will be named something like "md_20.part0002.xtc" with the existing one, using *gmx trjcat*. Use the following command for that:
+As described earlier, extending a MD simulation involves extending the md.tpr file with `gmx convert-tpr` option. After extending the run with `-noappend` (using `extend_md.pbs` script), you need to concentrate the new trajectory (which in this case will be named something like "md_20.part0002.xtc" with the existing one, using `gmx trjcat`. Use the following command for that:
 
 	gmx trjcat -f md_10.xtc md_20.part0002.xtc -o md_20.xtc
 
