@@ -10,39 +10,39 @@
 
 
 
-###################REQUIRED-SOFTWARES-FOR-GROMACS########################
+# REQUIRED-SOFTWARES-FOR-GROMACS #
 #									#
 -	For adding hydrogens to the ligand and export .mol2 file 	-
 -	Install Avogadro						-
 #									#
 ######################################################################### 
-#	For visualization of .pdb and .gro files			#
-#			Install PyMol					#
+-	For visualization of .pdb and .gro files			-
+-	Install PyMol							-
 #									#
 #########################################################################
-#	For final MD trajectory visualization				#
-#  Install VMD (Requires high spec computer for proper visualization	#
+-	For final MD trajectory visualization				-
+-  Install VMD (Requires high spec computer for proper visualization	-
 #									#
 #########################################################################
-#	For xvg file visualization					#
-#	Install grace (for Linux)					#
+-	For xvg file visualization					-
+-	Install grace (for Linux)					-
 #									#
-#	Use Matplot (from jupyter notebook) (for Windows/Linux)		#
-#	(Detailed instructions given below)				#
+-	Use Matplot (from jupyter notebook) (for Windows/Linux)		-
+-	(Detailed instructions given below)				-
 #########################################################################
 
 
 
 
-####################STEPS FOR MD AS FOLLOWS##############################
+# STEPS FOR MD AS FOLLOWS #
 
 
-1. ---PREPARE LIGAND IN AVVOGADRO----
+# 1. PREPARE LIGAND IN AVVOGADRO #
 1.1. Open the ligand pdb file and go to "Build" --> "Hydrogens" --> "Add Hydrogens" (This will add hydrogen molecules to the ligand, which might appear as new white dots)
 1.2. Then go to "Files" --> "Export" --> "Molecule". Select the "file type" as "All Files" and save the molecule as "LIG.mol2". (The name "LIG" can be changed as per your wish, but then subsequent changes in the next commands are necesary. Whenever there is something written as "LIG", that must be changed with the new name given by you. Renaming the files will not have any impact on the MD run.
 
 
-2. ----Correction to be made in LIG.mol2----
+# 2. Correction to be made in LIG.mol2 #
 ###Open LIG.mol2 by using gedit command or simply opening file in any text editor###
 2.1.	"@<TRIPOS>MOLECULE" make sure this is the first line in file
 	delete the header and empty space if you have to	
@@ -80,33 +80,36 @@ vii. Make sure now you have the LIG.pdb, LIG.itp in your working directory.
 
 
 
-###########################THINGS TO BE NOTED##########################
+# THINGS TO BE NOTED #
 
 
 #########################################################################
-#	In KUHPC, Gromacs runs as MPI, so for each command to work, 	#
-#	you have to initiate the "gmx" command as "gmx_mpi".		#
+-	In KUHPC, Gromacs runs as MPI, so for each command to work, 	-
+-	you have to initiate the "gmx" command as "gmx_mpi".		-
 #########################################################################
 
 
-----You can also use SIFIMAGE of latest gromacs----
+# Using Sifimage of GROMACS from Nvidia NGC catalog #
 
 1. Download the SIFIMAGE and place it in 
 	~/.config/sifdir/gromacs_2022.3.sif
 
 2. Now you can use the following command--
 
-	LD_LIBRARY_PATH="" singularity run --nv -B ${PWD}:/workspace ~/.config/sifdir/gromacs_2022.3.sif bash -c "cd /workspace && gmx hbond -s md100_rescale.tpr -f md100_center.xtc -num hb.xvg -tu ns"
+
+		LD_LIBRARY_PATH="" singularity run --nv -B ${PWD}:/workspace ~/.config/sifdir/gromacs_2022.3.sif bash -c "cd /workspace && gmx hbond -s md100_rescale.tpr -f md100_center.xtc -num hb.xvg -tu ns"
 
 
-(N.B.: The inverted commas are part of the command in this case, do not remove it)
+**(N.B.: The inverted commas are part of the command in this case, do not remove it)**
 
 3. Here you have to replace the 'gmx hbond -s md100_rescale.tpr -f md100_center.xtc -num hb.xvg -tu ns' with your command of interest, such as 'gmx pdb2gmx -f REC.pdb -o REC.gro'.
 
 
 
 ###########################################################################
-#--------------------------GROMACS TUTORIAL-------------------------------#
+
+# Begin the MD simulation #
+
 ###########################################################################
 
 	gmx pdb2gmx -f REC.pdb -ignh
@@ -115,7 +118,7 @@ vii. Make sure now you have the LIG.pdb, LIG.itp in your working directory.
 
 1 (TIP3P)
 
-## This will generate a file named "conf.gro" ##
+**This will generate a file named "conf.gro".** You can also specify the name of the output gro file by "-o name.gro" option.
 
 	gmx editconf -f LIG.pdb -o LIG.gro
 
@@ -126,7 +129,7 @@ Generate the LIgand topology with
  	gmx pdb2gmx -f LIG.pdb -o LIG.gro -ignh
 
 This will generate three files, LIG.gro, posre.itp and topol.top. Now rename the posre.itp as "posre_LIG.itp" and topol.top as "LIG.top"
-Now edit the LIG.top file as described below:
+# Edit the LIG.top file as described below: #
 Remove from the top of the file,
 	
  	; Include forcefield parameters
@@ -152,7 +155,8 @@ And remove from the bottom of the file the protein mentioned below, this will en
 	#include "amber96.ff/ions.itp"
 
 
-## Now you have to copy the "conf.gro" and "LIG.gro" file into a "complex.gro" file ##
+# Build the .gro file for the complex #
+**Now you have to copy the "conf.gro" and "LIG.gro" file into a "complex.gro" file**
 To do that, follow the steps-----
 	1. Type "cp ./conf.gro ./complex.gro  (This will make a copy the "conf.gro" and name it as "complex.gro")
 	2. Now open LIG.gro file in text editor by typing "nano LIG.gro" and copy from the third line of the file to the second last line of the file.
@@ -163,9 +167,9 @@ To do that, follow the steps-----
 	
 *(You can check the receptor and ligand by downloading the "complex.gro" and opening it in PyMol)*
 
------EDIT THE FOLLOWING in topol.top -----
+# EDIT THE FOLLOWING in topol.top #
 nano topol.top
-(add 
+add 
 
 	; Include ligand topology 
 	#include "LIG.itp"
@@ -199,7 +203,7 @@ SO, IT WILL LOOK LIKE--
 
 
 
------ EDIT THE FOLLOWING in lig.itp  or LIG.top-----
+# EDIT THE FOLLOWING in lig.itp  or LIG.top #
 
 	[ moleculetype ]
 	; Name nrexcl
@@ -209,7 +213,7 @@ TO
 	[ moleculetype ]
 	; Name nrexcl
 	LIG 3
-(in certain cases this will already be LIG 3 so for such case no change is needed)
+*(in certain cases this will already be LIG 3 so for such case no change is needed)*
 
 ----------
 
@@ -220,7 +224,7 @@ Next step is the solvation of the complex..
 
 	gmx solvate -cp box.gro -cs spc216.gro -p topol.top -o solv.gro
 
-Then, build the .tpr file for the ions, that will be used for total charge neutralization
+# Build the .tpr file for the ions, that will be used for total charge neutralization #
 	
 	gmx grompp -f ions.mdp -c solv.gro -p topol.top -o ions.tpr
 
@@ -236,6 +240,8 @@ Then, build the .tpr file for the ions, that will be used for total charge neutr
 (Select Option)
 
 	15
+
+# Energy Minimization #
 Then, go for energy minimization. To build the energy minimization tpr file (em.tpr),
 	
 	gmx grompp -f em.mdp -c solv_ions.gro -p topol.top -o em.tpr
@@ -252,7 +258,7 @@ Then for final energy minimization
 **(For this you can use the "gromacs_em.pbs" script)**
 In that script you can change the walltime, output name, job name as per your requirement.
 
-
+# Making index file for ligand #
 Now make index files
  
 	gmx make_ndx -f LIG.gro -o index_LIG.ndx
@@ -261,6 +267,8 @@ Now make index files
 	
 	> 0 & ! a H*
  	> q
+
+# Making the position restraint file for the ligand #
 
 #Now, make the position restraint file for the ligand. It is not always required for Protein-Protein and Protein-DNA/RNA simulation as the "pdb2gmx" already builds a position restraint file for the ligand (which was previously described to rename as "posre_LIG.itp".#
 	
@@ -289,7 +297,7 @@ Modify it as
 	#include "posre_LIG.itp"
 	#endif
 
-For Protein-Protein and Protein-DNA/RNA simulation, the posre_LIG.itp file needs to be included at a different place, which is at the top of the file where,
+**For Protein-Protein and Protein-DNA/RNA simulation, the posre_LIG.itp file needs to be included at a different place, which is at the top of the file where,**
 
 	; Include ligand topology
  	#include "LIG.top"
@@ -303,19 +311,23 @@ is mentioned. Modify it as,
     	#endif
 
 
-Again, Make other Index file for System 
+# Making other Index file for the whole System #
 
 
 	gmx make_ndx -f em.gro -o index.ndx
 
-(Select Options)
+(Select Options) Which will signify Protein and LIG
 
 	
 	> 1 | 13
 	> q
-	
---------------------[NVT MINIMIZATION]------------------------
-Remember to edit the *nvt.mdp* file to insert proper tc coupling groups.
+
+**The option might change to the following for Protein-DNA/RNA simulation** Which will signify Protein and DNA/RNA
+
+	> 1 | 12
+ 	> q
+# [NVT MINIMIZATION] #
+**Remember to edit the *nvt.mdp* file to insert proper tc coupling groups.**
 For Protein-Ligand simulation, choose tc groups as 
 
 	Protein_LIG Water_and_ions
@@ -340,7 +352,7 @@ AND THEN
 **(For this you can use "gromacs_nvt.pbs" script)**
 
 
---------------------[NPT MINIMIZATION]-----------------------
+# [NPT MINIMIZATION] #
 Remember to edit the *npt.mdp* file to insert proper tc coupling groups.
 For Protein-Ligand simulation, choose tc groups as 
 
@@ -365,17 +377,19 @@ AND THEN
 **(For this you have to use "gromacs_npt.pbs" script)**
 
 
-####### FEW THINGS TO KEEP IN MIND WHILE USING THE npt.mdp FILE #######
+# FEW THINGS TO KEEP IN MIND WHILE USING THE npt.mdp and md.mdp FILE #
 1. Pressure coupling can be changed to anisotropic if required (See references).
 2. Refcoord scaling can be removed if required.
 3. There are several other pressure coupling groups that can be applied with gromacs. You can utilize them as per your requirement.
 
 
------------------[FINAL MD RUN/PRODUCTION]-------------------
+# [FINAL MD RUN/PRODUCTION] #
 gedit md.mdp (Change MD RUN TIME as per your need)
+-	Check for all the parameters in the md.mdp file to match the previously used nvt.mdp and npt.mdp files.		-
 
 
-	gmx grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -n index.ndx -maxwarn 2 -o md.tpr
+
+		gmx grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -n index.ndx -maxwarn 2 -o md.tpr
 
 AND THEN
 	
@@ -384,11 +398,11 @@ AND THEN
 
 
 
------------------[RESUME MD RUN FROM CHECKPOINT]----------------
+# [RESUME MD RUN FROM CHECKPOINT] #
 
 **If the run somehow stops, it will generate a checkpoint file (MD_NAME.cpt). You can use this file to run the "resume_md.pbs" script, which will resume the run from the point where it stopped**
 
------------------[EXTEND MD RUN FROM LAST CHECKPOINT]-----------
+# [EXTEND MD RUN FROM LAST CHECKPOINT] #
 
 If you want to extend the run any further, follow the steps:
 
@@ -410,7 +424,7 @@ You can also find a checkpoint file named "md_prev.cpt".
 
 #################################################################################
 #										#
-#			THIS IS THE END OF FINAL MD RUN				#
+# THIS IS THE END OF FINAL MD RUN #						#
 #										#
 #################################################################################
 
@@ -431,13 +445,13 @@ You can also find a checkpoint file named "md_prev.cpt".
 
 #################################################################################
 #										#
-#				POST-PROCESSING					#
+# POST-PROCESSING #								#
 #										#
 #################################################################################
 
 
 
-----[Recentering and Rewrapping Coordinates]----
+# [Recentering and Rewrapping Coordinates] #
 
 	gmx trjconv -s md.tpr -f md.xtc -o md_center.xtc -center -pbc mol -ur compact
 #Choose "Protein" for centering and "System" for output.
@@ -452,6 +466,7 @@ As described earlier, extending a MD simulation involves extending the md.tpr fi
 After that you can proceed for centering with the previously mentioned command.
 
 
+# Dumping pdb at different time frames #
 #To extract the first frame (t = 0 ns) of the trajectory, use trjconv -dump with the recentered trajectory:
 
 	gmx trjconv -s md.tpr -f md_center.xtc -o start.pdb -dump 0
@@ -463,7 +478,7 @@ After that you can proceed for centering with the previously mentioned command.
 
 
 
-------RMSD Calculations-----
+# RMSD Calculations #
 
 	gmx rms -s md.tpr -f md_center.xtc -o rmsd.xvg
 
@@ -481,7 +496,7 @@ After that you can proceed for centering with the previously mentioned command.
 
 
 
-------RMSF Calculations-----
+# RMSF Calculations #
 
 	gmx rmsf -s md.tpr -f md_center.xtc -o rmsf.xvg
 
@@ -495,7 +510,7 @@ For residue specific RMSF calculation, use:
 	gmx rmsf -s md.tpr -f md_center.xtc -o rmsf.xvg -res
 
 
------------h-bonds-------------------
+# Calculating No.of h-bonds #
 
 	gmx hbond -s md.tpr -f md_center.xtc -num hb.xvg
 
@@ -509,7 +524,7 @@ For residue specific RMSF calculation, use:
 
 	13
 
-For running the same command with Gromacs sifimage
+**For running the same command with Gromacs sifimage**
 	
 	ssh kuhpcgn1
 
@@ -524,7 +539,7 @@ cd to the working directory and then type:
 Then select options
 
 
---------------Gyration Radius------------------
+# Calculation of Gyration Radius #
 
 	gmx gyrate -s md.tpr -f md_center.xtc -o gyrate1.xvg
 
@@ -532,7 +547,7 @@ Then select options
 
 	4
 
--------------ENERGY Calculations---------------
+# ENERGY Calculations #
 
 	gmx energy -f md.edr -o energy1.xvg
 
@@ -542,7 +557,7 @@ Then select options
 
 
 #########################################################################
-#			Visualization of xvg files			#
+# Visualization of xvg files #						#
 #########################################################################
 
 
