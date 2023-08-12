@@ -442,6 +442,13 @@ You can also find a checkpoint file named "md_prev.cpt".
 	gmx trjconv -s md.tpr -f md.xtc -o md_center.xtc -center -pbc mol -ur compact
 #Choose "Protein" for centering and "System" for output.
 
+**Point to Note if you are extending a simulation**
+As described earlier, extending a MD simulation involves extending the md.tpr file with *convert-tpr* option. After extending the run with *-noappend* (using extend_md.pbs script), you need to concentrate the new trajectory (which in this case will be named something like "md_20.part0002.xtc" with the existing one, using *gmx trjcat*. Use the following command for that:
+
+	gmx trjcat -f md_10.xtc md_20.part0002.xtc -o md_20.xtc
+
+After that you can proceed for centering with the previously mentioned command.
+
 
 #To extract the first frame (t = 0 ns) of the trajectory, use trjconv -dump with the recentered trajectory:
 
