@@ -122,7 +122,7 @@ vii. Make sure now you have the LIG.pdb, LIG.itp in your working directory.
 
 ###########################################################################
 
-	gmx pdb2gmx -f REC.pdb -ignh
+	gmx_mpi pdb2gmx -f REC.pdb -ignh
 
 
 	8 (CHARMM27)
@@ -132,13 +132,13 @@ vii. Make sure now you have the LIG.pdb, LIG.itp in your working directory.
 
 **This will generate a file named "conf.gro".** You can also specify the name of the output gro file by `-o name.gro` option.
 
-	gmx editconf -f LIG.pdb -o LIG.gro
+	gmx_mpi editconf -f LIG.pdb -o LIG.gro
 
 # If you are simulating Protein-Protein or Protein-DNA/RNA then #
 
 Generate the LIgand topology with
 	
- 	gmx pdb2gmx -f LIG.pdb -o LIG.gro -ignh
+ 	gmx_mpi pdb2gmx -f LIG.pdb -o LIG.gro -ignh
 
 This will generate three files, LIG.gro, posre.itp and topol.top. Now rename the posre.itp as "posre_LIG.itp" and topol.top as "LIG.top"
 # Edit the LIG.top file as described below: #
@@ -229,25 +229,25 @@ TO
 
 ----------
 
-	gmx editconf -f complex.gro -d 1.0 -bt triclinic -o box.gro 
+	gmx_mpi editconf -f complex.gro -d 1.0 -bt triclinic -o box.gro 
 
 *(You can also change `triclinic` to `dodecahedron` as per your requirement)*
 Next step is the solvation of the complex..
 
-	gmx solvate -cp box.gro -cs spc216.gro -p topol.top -o solv.gro
+	gmx_mpi solvate -cp box.gro -cs spc216.gro -p topol.top -o solv.gro
 
 # Build the .tpr file for the ions, that will be used for total charge neutralization #
 	
-	gmx grompp -f ions.mdp -c solv.gro -p topol.top -o ions.tpr
+	gmx_mpi grompp -f ions.mdp -c solv.gro -p topol.top -o ions.tpr
 
 (OR)
 	
-	gmx grompp -f ions.mdp -c solv.gro -maxwarn 2 -p topol.top -o ions.tpr
+	gmx_mpi grompp -f ions.mdp -c solv.gro -maxwarn 2 -p topol.top -o ions.tpr
 
 *(The `-maxwarn 2` option is sometimes required to ignore the warnings)*
 
 
-	gmx genion -s ions.tpr -p topol.top -conc 0.1 -neutral -o solv_ions.gro
+	gmx_mpi genion -s ions.tpr -p topol.top -conc 0.1 -neutral -o solv_ions.gro
 
 (Select Option)
 
@@ -256,16 +256,16 @@ Next step is the solvation of the complex..
 # [Energy Minimization] #
 Then, go for energy minimization. To build the energy minimization tpr file (em.tpr),
 	
-	gmx grompp -f em.mdp -c solv_ions.gro -p topol.top -o em.tpr
+	gmx_mpi grompp -f em.mdp -c solv_ions.gro -p topol.top -o em.tpr
 
 (OR)
 	
-	gmx grompp -f em.mdp -c solv_ions.gro -maxwarn 2 -p topol.top -o em.tpr
+	gmx_mpi grompp -f em.mdp -c solv_ions.gro -maxwarn 2 -p topol.top -o em.tpr
 
 **(The `-maxwarn 2` option is sometimes required to ignore the warnings)**
 Then for final energy minimization
 
-	gmx mdrun -v -deffnm em
+	gmx_mpi mdrun -v -deffnm em
 
 **(For this you can use the `gromacs_em.pbs` script)**
 In that script you can change the walltime, output name, job name as per your requirement.
@@ -273,7 +273,7 @@ In that script you can change the walltime, output name, job name as per your re
 # Making index file for ligand #
 Now make index files
  
-	gmx make_ndx -f LIG.gro -o index_LIG.ndx
+	gmx_mpi make_ndx -f LIG.gro -o index_LIG.ndx
 
 (Select options)
 	
@@ -284,7 +284,7 @@ Now make index files
 
 #Now, make the position restraint file for the ligand. It is not always required for Protein-Protein and Protein-DNA/RNA simulation as the `gmx pdb2gmx` already builds a position restraint file for the ligand (which was previously described to rename as "posre_LIG.itp".#
 	
-	gmx genrestr -f LIG.gro -n index_LIG.ndx -o posre_LIG.itp -fc 1000 1000 1000
+	gmx_mpi genrestr -f LIG.gro -n index_LIG.ndx -o posre_LIG.itp -fc 1000 1000 1000
 
 (Select group)
 
@@ -326,7 +326,7 @@ is mentioned. Modify it as,
 # Making other Index file for the whole System #
 
 
-	gmx make_ndx -f em.gro -o index.ndx
+	gmx_mpi make_ndx -f em.gro -o index.ndx
 
 (Select Options) Which will signify Protein and LIG
 
@@ -356,11 +356,11 @@ For Protein in water (Protein only) simulation, choose tc groups as
 Then use the following command to generate *nvt.tpr* file
 
 
-	gmx grompp -f nvt.mdp -c em.gro -r em.gro -p topol.top -n index.ndx -maxwarn 2 -o nvt.tpr
+	gmx_mpi grompp -f nvt.mdp -c em.gro -r em.gro -p topol.top -n index.ndx -maxwarn 2 -o nvt.tpr
 	
 AND THEN
 	
-	gmx mdrun -deffnm nvt
+	gmx_mpi mdrun -deffnm nvt
 **(For this you can use `gromacs_nvt.pbs` script)**
 
 
@@ -381,11 +381,11 @@ For Protein in water (Protein only) simulation, choose tc groups as
 
 Then use the following command to generate `npt.tpr` file
 
-	gmx grompp -f npt.mdp -c nvt.gro -r nvt.gro -p topol.top -n index.ndx -maxwarn 2 -o npt.tpr
+	gmx_mpi grompp -f npt.mdp -c nvt.gro -r nvt.gro -p topol.top -n index.ndx -maxwarn 2 -o npt.tpr
 	
 AND THEN
 	
-	gmx mdrun -deffnm npt
+	gmx_mpi mdrun -deffnm npt
 **(For this you have to use `gromacs_npt.pbs` script)**
 
 
@@ -401,11 +401,11 @@ AND THEN
 
 
 
-		gmx grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -n index.ndx -maxwarn 2 -o md.tpr
+		gmx_mpi grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -n index.ndx -maxwarn 2 -o md.tpr
 
 AND THEN
 	
-	gmx mdrun -deffnm md
+	gmx_mpi mdrun -deffnm md
 **(For this you can use `md_complex.pbs` script. Remember to change the MD_NAME, Job name, walltime, output filename accordingly)**
 
 
@@ -427,7 +427,7 @@ Change the value after `-extend` accordingly (the value indicates the amount of 
 
 Then run the md-run from the last checkpoint file created:
 	
-	gmx mdrun -v -deffnm md_20 -cpi md_10.cpt -noappend
+	gmx_mpi mdrun -v -deffnm md_20 -cpi md_10.cpt -noappend
 
 You can also find a checkpoint file named `md_prev.cpt`.
 
@@ -457,7 +457,7 @@ You can also find a checkpoint file named `md_prev.cpt`.
 
 # [Recentering and Rewrapping Coordinates] #
 
-	gmx trjconv -s md.tpr -f md.xtc -o md_center.xtc -center -pbc mol -ur compact
+	gmx_mpi trjconv -s md.tpr -f md.xtc -o md_center.xtc -center -pbc mol -ur compact
 #Choose `Protein` for centering and `System` for output.
 
 # Point to Note if you are extending a simulation #
@@ -465,7 +465,7 @@ You can also find a checkpoint file named `md_prev.cpt`.
 
 As described earlier, extending a MD simulation involves extending the md.tpr file with `gmx convert-tpr` option. After extending the run with `-noappend` (using `extend_md.pbs` script), you need to concentrate the new trajectory (which in this case will be named something like "md_20.part0002.xtc" with the existing one, using `gmx trjcat`. Use the following command for that:
 
-	gmx trjcat -f md_10.xtc md_20.part0002.xtc -o md_20.xtc
+	gmx_mpi trjcat -f md_10.xtc md_20.part0002.xtc -o md_20.xtc
 
 After that you can proceed for centering with the previously mentioned command.
 
@@ -473,22 +473,22 @@ After that you can proceed for centering with the previously mentioned command.
 # Dumping pdb at different time frames #
 #To extract the first frame (t = 0 ns) of the trajectory, use `trjconv` and  `-dump` with the recentered trajectory:
 
-	gmx trjconv -s md.tpr -f md_center.xtc -o start.pdb -dump 0
+	gmx_mpi trjconv -s md.tpr -f md_center.xtc -o start.pdb -dump 0
 (Here "0" refers to 0 picoseconds)
 #To extract any time point frame (such as t = 10 ns) of the trajectory, use `trjconv` and `-dump` with the recentered trajectory:
 
-	gmx trjconv -s md.tpr -f md_center.xtc -o start.pdb -dump 10000
+	gmx_mpi trjconv -s md.tpr -f md_center.xtc -o start.pdb -dump 10000
 (Here "10000" means 10000 picoseconds = 10 ns)
 
 
 
 # [RMSD Calculations] #
 
-	gmx rms -s md.tpr -f md_center.xtc -o rmsd.xvg
+	gmx_mpi rms -s md.tpr -f md_center.xtc -o rmsd.xvg
 
 (OR)
 
-	gmx rms -s md.tpr -f md_center.xtc -o rmsd.xvg -tu ns 
+	gmx_mpi rms -s md.tpr -f md_center.xtc -o rmsd.xvg -tu ns 
 
 (Select Options respectively) (Backbone and Backbone)
 
@@ -502,7 +502,7 @@ After that you can proceed for centering with the previously mentioned command.
 
 # [RMSF Calculations] #
 
-	gmx rmsf -s md.tpr -f md_center.xtc -o rmsf.xvg
+	gmx_mpi rmsf -s md.tpr -f md_center.xtc -o rmsf.xvg
 
 (Select Option) (Backbone)
 
@@ -511,16 +511,16 @@ After that you can proceed for centering with the previously mentioned command.
 **(OR)**
 For residue specific RMSF calculation, use:
 
-	gmx rmsf -s md.tpr -f md_center.xtc -o rmsf.xvg -res
+	gmx_mpi rmsf -s md.tpr -f md_center.xtc -o rmsf.xvg -res
 
 
 # [Calculating No.of h-bonds] #
 
-	gmx hbond -s md.tpr -f md_center.xtc -num hb.xvg
+	gmx_mpi hbond -s md.tpr -f md_center.xtc -num hb.xvg
 
 (OR)
 
-	gmx hbond -s md.tpr -f md_center.xtc -num hb.xvg -tu ns
+	gmx_mpi hbond -s md.tpr -f md_center.xtc -num hb.xvg -tu ns
 
 (Select Option) (Protein and LIG) **(Options may change depending on the run, such as 4 & 12 for Protein-DNA/RNA simulation)**
 
@@ -528,6 +528,7 @@ For residue specific RMSF calculation, use:
 
 	13
 
+**Note: These `gmx_mpi hbond` command does not work in kuhpc, so follow th next steps to use sifimage of latest version of GROMACS and run it on GPU.
 # For running the hbond with Gromacs sifimage #
 	
 	ssh kuhpcgn1
@@ -545,7 +546,7 @@ Then select options
 
 # [Calculation of Gyration Radius] #
 
-	gmx gyrate -s md.tpr -f md_center.xtc -o gyrate1.xvg
+	gmx_mpi gyrate -s md.tpr -f md_center.xtc -o gyrate1.xvg
 
 #Choose the group of your choice
 
@@ -553,7 +554,7 @@ Then select options
 
 # [ENERGY Calculations] #
 
-	gmx energy -f md.edr -o energy1.xvg
+	gmx_mpi energy -f md.edr -o energy1.xvg
 
 #Choose the option of your choice
 
@@ -561,7 +562,7 @@ Then select options
 
 
 #########################################################################
-# Visualization of xvg files #						
+# Visualization of xvg files #
 #########################################################################
 
 
