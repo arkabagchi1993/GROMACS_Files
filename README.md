@@ -29,13 +29,11 @@
 #									#
 -	Use Matplot (from jupyter notebook) (for Windows/Linux)		-
 -	(Detailed instructions given below)				-
+
+
 #########################################################################
-
-
-
-
 # STEPS FOR MD AS FOLLOWS #
-
+#########################################################################
 
 # 1. PREPARE LIGAND IN AVVOGADRO #
 1.1. Open the ligand pdb file and go to "Build" --> "Hydrogens" --> "Add Hydrogens" (This will add hydrogen molecules to the ligand, which might appear as new white dots)
