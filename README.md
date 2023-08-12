@@ -125,10 +125,11 @@ vii. Make sure now you have the LIG.pdb, LIG.itp in your working directory.
 	gmx_mpi pdb2gmx -f REC.pdb -ignh
 
 
-	8 (CHARMM27)
+
+		8 (CHARMM27)
 
 
-	1 (TIP3P)
+		1 (TIP3P)
 
 **This will generate a file named "conf.gro".** You can also specify the name of the output gro file by `-o name.gro` option.
 
