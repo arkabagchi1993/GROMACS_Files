@@ -569,8 +569,9 @@ Then select options
 -------------- With Matplot (Jupyter notebook)-----------------
 1. Install jupyter notebook in a conda environment by typing, `conda install jupyter notebook`.
 2. Open jupyter notebook and open Python3 kernel (from 'New').
-3. Paste the lines from the [matplot.py](matplot.py) or [matplo_multidata.py](matplot_multidata.py) and click `run`.
-(Change the filename, x label, y label and title of plot according to your requirement)
+3. Paste the lines from the [mdanalysis_hbond.py](mdanalysis_hbond.py).
+4. Give the proper input files in the `/path/to/input/files` section and change the `start=` frame according to your query.
+5. Click `run`.
 
 
 #########################################################################
