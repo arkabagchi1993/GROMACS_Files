@@ -270,7 +270,7 @@ Then for final energy minimization
 
 	gmx_mpi mdrun -v -deffnm em
 
-**(For this you can use the `gromacs_em.pbs` script)**
+**(For this you can use the [gromacs_em.pbs](PBS_Files/gromacs_em.pbs) script)**
 In that script you can change the walltime, output name, job name as per your requirement.
 
 # Making index file for ligand #
@@ -342,7 +342,7 @@ is mentioned. Modify it as,
 	> 1 | 12
  	> q
 # [NVT MINIMIZATION] #
-**Remember to edit the `nvt.mdp` file to insert proper tc coupling groups.**
+**Remember to edit the [nvt.mdp](MDP_Files/nvt.mdp) file to insert proper tc coupling groups.**
 For Protein-Ligand simulation, choose tc groups as 
 
 	Protein_LIG Water_and_ions
@@ -364,11 +364,11 @@ Then use the following command to generate *nvt.tpr* file
 AND THEN
 	
 	gmx_mpi mdrun -deffnm nvt
-**(For this you can use `gromacs_nvt.pbs` script)**
+**(For this you can use [gromacs_nvt.pbs](PBS_Files/gromacs_nvt.pbs) script)**
 
 
 # [NPT MINIMIZATION] #
-Remember to edit the `npt.mdp` file to insert proper tc coupling groups.
+Remember to edit the [npt.mdp](MDP_Files/npt.mdp) file to insert proper tc coupling groups.
 For Protein-Ligand simulation, choose tc groups as 
 
 	Protein_LIG Water_and_ions
@@ -389,7 +389,7 @@ Then use the following command to generate `npt.tpr` file
 AND THEN
 	
 	gmx_mpi mdrun -deffnm npt
-**(For this you have to use `gromacs_npt.pbs` script)**
+**(For this you have to use [gromacs_npt.pbs](PBS_Files/gromacs_npt.pbs) script)**
 
 
 # FEW THINGS TO KEEP IN MIND WHILE USING THE `npt.mdp` and `md.mdp` FILE #
@@ -399,8 +399,8 @@ AND THEN
 
 
 # [FINAL MD RUN/PRODUCTION] #
-`nano md.mdp` (Change MD RUN TIME as per your need)
--	Check for all the parameters in the `md.mdp` file to match the previously used `nvt.mdp` and `npt.mdp` files.		-
+`nano md.mdp` (Change MD RUN TIME as per your need).
+-	Check for all the parameters in the [md.mdp](MDP_Files/md.mdp) file to match the previously used [nvt.mdp](MDP_Files/nvt.mdp) and [npt.mdp](MDP_Files/npt.mdp) files.		-
 
 
 
@@ -409,7 +409,7 @@ AND THEN
 AND THEN
 	
 	gmx_mpi mdrun -deffnm md
-**(For this you can use `md_complex.pbs` script. Remember to change the MD_NAME, Job name, walltime, output filename accordingly)**
+**(For this you can use [md_complex.pbs](PBS_Files/md_complex.pbs) script. Remember to change the MD_NAME, Job name, walltime, output filename accordingly)**
 
 
 
