@@ -415,7 +415,7 @@ AND THEN
 
 # [RESUME MD RUN FROM CHECKPOINT] #
 
-**If the run somehow stops, it will generate a checkpoint file (`MD_NAME.cpt`). You can use this file to run the `resume_md.pbs` script, which will resume the run from the point where it stopped**
+**If the run somehow stops, it will generate a checkpoint file (`MD_NAME.cpt`). You can use this file to run the [resume_md.pbs](PBS_Files/resume_md.pbs) script, which will resume the run from the point where it stopped**
 
 # [EXTEND MD RUN FROM LAST CHECKPOINT] #
 
@@ -435,7 +435,7 @@ Then run the md-run from the last checkpoint file created:
 You can also find a checkpoint file named `md_prev.cpt`.
 
 
-**You can use the `extend_md.pbs` for this extension.**
+**You can use the [extend_md.pbs](PBS_Files/extend_md.pbs) for this extension.**
 
 #################################################################################
 #										#
