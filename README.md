@@ -238,6 +238,8 @@ Next step is the solvation of the complex..
 	gmx_mpi solvate -cp box.gro -cs spc216.gro -p topol.top -o solv.gro
 
 # Build the .tpr file for the ions, that will be used for total charge neutralization #
+
+Use the [ions.mdp](MDP_Files/ions.mdp) file for the command.
 	
 	gmx_mpi grompp -f ions.mdp -c solv.gro -p topol.top -o ions.tpr
 
