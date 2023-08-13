@@ -257,7 +257,7 @@ Use the [ions.mdp](MDP_Files/ions.mdp) file for the command.
 	15
 
 # [Energy Minimization] #
-Then, go for energy minimization. To build the energy minimization tpr file (em.tpr),
+Then, go for energy minimization. To build the energy minimization tpr file (em.tpr) use the [em.mdp](MDP_Files/em.mdp)
 	
 	gmx_mpi grompp -f em.mdp -c solv_ions.gro -p topol.top -o em.tpr
 
