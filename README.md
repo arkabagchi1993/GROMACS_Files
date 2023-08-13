@@ -562,6 +562,15 @@ Then select options
 #Choose the option of your choice
 
 
+#########################################################################
+# Analysis and identification of H-bond residues #
+#########################################################################
+
+-------------- With Matplot (Jupyter notebook)-----------------
+1. Install jupyter notebook in a conda environment by typing, `conda install jupyter notebook`.
+2. Open jupyter notebook and open Python3 kernel (from 'New').
+3. Paste the lines from the [matplot.py](matplot.py) or [matplo_multidata.py](matplot_multidata.py) and click `run`.
+(Change the filename, x label, y label and title of plot according to your requirement)
 
 
 #########################################################################
@@ -581,8 +590,10 @@ Then select options
 -------------- With Matplot (Jupyter notebook)-----------------
 1. Install jupyter notebook in a conda environment by typing, `conda install jupyter notebook`.
 2. Open jupyter notebook and open Python3 kernel (from 'New').
-3. Paste the lines in the `Matplot.py` and click `run`.
+3. Paste the lines in the [matplot.py](matplot.py) or [matplo_multidata.py](matplot_multidata.py) and click `run`.
 (Change the filename, x label, y label and title of plot according to your requirement)
+
+
 
 
 
