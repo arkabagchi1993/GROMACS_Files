@@ -47,7 +47,7 @@
 # STEPS FOR MD AS FOLLOWS #
 #########################################################################
 
-# 1. PREPARE LIGAND IN AVVOGADRO #
+# 1. PREPARE LIGAND IN AVOGADRO #
 1.1. Open the ligand pdb file and go to "Build" --> "Hydrogens" --> "Add Hydrogens" (This will add hydrogen molecules to the ligand, which might appear as new white dots)
 1.2. Then go to "Files" --> "Export" --> "Molecule". Select the "file type" as "All Files" and save the molecule as "LIG.mol2". (The name "LIG" can be changed as per your wish, but then subsequent changes in the next commands are necesary. Whenever there is something written as "LIG", that must be changed with the new name given by you. Renaming the files will not have any impact on the MD run.
 
@@ -256,7 +256,7 @@ Use the [ions.mdp](MDP_Files/ions.mdp) file for the command.
 
 	15
 
-# [Energy Minimization] #
+# Energy Minimization #
 Then, go for energy minimization. To build the energy minimization tpr file (em.tpr) use the [em.mdp](MDP_Files/em.mdp)
 	
 	gmx_mpi grompp -f em.mdp -c solv_ions.gro -p topol.top -o em.tpr
@@ -341,7 +341,7 @@ is mentioned. Modify it as,
 
 	> 1 | 12
  	> q
-# [NVT MINIMIZATION] #
+# NVT MINIMIZATION #
 **Remember to edit the [nvt.mdp](MDP_Files/nvt.mdp) file to insert proper tc coupling groups.**
 For Protein-Ligand simulation, choose tc groups as 
 
@@ -367,7 +367,7 @@ AND THEN
 **(For this you can use [gromacs_nvt.pbs](PBS_Files/gromacs_nvt.pbs) script)**
 
 
-# [NPT MINIMIZATION] #
+# NPT MINIMIZATION #
 Remember to edit the [npt.mdp](MDP_Files/npt.mdp) file to insert proper tc coupling groups.
 For Protein-Ligand simulation, choose tc groups as 
 
@@ -398,7 +398,7 @@ AND THEN
 3. There are several other pressure coupling groups that can be applied with gromacs. You can utilize them as per your requirement.
 
 
-# [FINAL MD RUN/PRODUCTION] #
+# FINAL MD RUN/PRODUCTION #
 `nano md.mdp` (Change MD RUN TIME as per your need).
 -	Check for all the parameters in the [md.mdp](MDP_Files/md.mdp) file to match the previously used [nvt.mdp](MDP_Files/nvt.mdp) and [npt.mdp](MDP_Files/npt.mdp) files.		-
 
@@ -413,11 +413,11 @@ AND THEN
 
 
 
-# [RESUME MD RUN FROM CHECKPOINT] #
+# RESUME MD RUN FROM CHECKPOINT #
 
 **If the run somehow stops, it will generate a checkpoint file (`MD_NAME.cpt`). You can use this file to run the [resume_md.pbs](PBS_Files/resume_md.pbs) script, which will resume the run from the point where it stopped**
 
-# [EXTEND MD RUN FROM LAST CHECKPOINT] #
+# EXTEND MD RUN FROM LAST CHECKPOINT #
 
 If you want to extend the run any further, follow the steps:
 
@@ -458,7 +458,7 @@ You can also find a checkpoint file named `md_prev.cpt`.
 
 
 
-# [Recentering and Rewrapping Coordinates] #
+# Recentering and Rewrapping Coordinates #
 
 	gmx_mpi trjconv -s md.tpr -f md.xtc -o md_center.xtc -center -pbc mol -ur compact
 #Choose `Protein` for centering and `System` for output.
@@ -474,7 +474,7 @@ After that you can proceed for centering with the previously mentioned command.
 
 
 # Dumping pdb at different time frames #
-#To extract the first frame (t = 0 ns) of the trajectory, use `trjconv` and  `-dump` with the recentered trajectory:
+To extract the first frame (t = 0 ns) of the trajectory, use `trjconv` and  `-dump` with the recentered trajectory:
 
 	gmx_mpi trjconv -s md.tpr -f md_center.xtc -o start.pdb -dump 0
 (Here "0" refers to 0 picoseconds)
@@ -485,7 +485,7 @@ After that you can proceed for centering with the previously mentioned command.
 
 
 
-# [RMSD Calculations] #
+# RMSD Calculations #
 
 	gmx_mpi rms -s md.tpr -f md_center.xtc -o rmsd.xvg
 
@@ -503,7 +503,7 @@ After that you can proceed for centering with the previously mentioned command.
 
 
 
-# [RMSF Calculations] #
+# RMSF Calculations #
 
 	gmx_mpi rmsf -s md.tpr -f md_center.xtc -o rmsf.xvg
 
@@ -517,7 +517,7 @@ For residue specific RMSF calculation, use:
 	gmx_mpi rmsf -s md.tpr -f md_center.xtc -o rmsf.xvg -res
 
 
-# [Calculating No.of h-bonds] #
+# Calculating No.of hydrogen bonds #
 
 	gmx_mpi hbond -s md.tpr -f md_center.xtc -num hb.xvg
 
@@ -547,7 +547,7 @@ cd to the working directory and then type:
 Then select options
 
 
-# [Calculation of Gyration Radius] #
+# Calculation of Gyration Radius #
 
 	gmx_mpi gyrate -s md.tpr -f md_center.xtc -o gyrate1.xvg
 
@@ -555,7 +555,7 @@ Then select options
 
 	4
 
-# [ENERGY Calculations] #
+# ENERGY Calculations #
 
 	gmx_mpi energy -f md.edr -o energy1.xvg
 
@@ -567,10 +567,10 @@ Then select options
 #########################################################################
 
 -------------- With Matplot (Jupyter notebook)-----------------
-1. Install jupyter notebook in a conda environment by typing, `conda install jupyter notebook`.
+1. Install jupyter notebook in a conda environment by typing, `conda install jupyter notebook` or `pip install jupyter notebook`.
 2. Open jupyter notebook and open Python3 kernel (from 'New').
 3. Paste the lines from the [mdanalysis_hbond.py](mdanalysis_hbond.py).
-4. Give the proper input files in the `/path/to/input/files` section and change the `start=` frame according to your query.
+4. Give the proper input files in the `/path/to/input/files` section (the final trajectory file named `md_center.xtc` and the final tpr file named `md.tpr`) and change the `start=` frame according to your query.
 5. Click `run`.
 
 
@@ -589,7 +589,7 @@ Then select options
 
 
 -------------- With Matplot (Jupyter notebook)-----------------
-1. Install jupyter notebook in a conda environment by typing, `conda install jupyter notebook`.
+1. Install jupyter notebook in a conda environment by typing, `conda install jupyter notebook` or `pip install jupyter notebook`.
 2. Open jupyter notebook and open Python3 kernel (from 'New').
 3. Paste the lines in the [matplot.py](matplot.py) or [matplo_multidata.py](matplot_multidata.py) and click `run`.
 (Change the filename, x label, y label and title of plot according to your requirement)
