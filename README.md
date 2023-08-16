@@ -131,6 +131,8 @@ Choose the options:
 
 	1 (TIP3P)
 
+*Point to note*: If you are simulating a protein with multiple side chains, sometimes fixing the side-chains of the PDB acquired from "www.rcsb.org" is required. For that use the "spdbv" software as described below.
+
 **This will generate a file named "conf.gro".** You can also specify the name of the output gro file by `-o name.gro` option.
 
 	gmx_mpi editconf -f LIG.pdb -o LIG.gro
@@ -167,6 +169,21 @@ And remove from the bottom of the file the protein mentioned below, this will en
 	; Include topology for ions
 	#include "amber96.ff/ions.itp"
 
+After that you have to also remove the part from the `LIG.top` file, described below: (Which will ensure that the RNA/DNA/Protein molecule is called only once in the `topol.top` file)
+For Protein/RNA simulation:
+
+	[molecules]
+ 	RNA_chain_A    1
+
+For Protein-DNA simulation:
+
+	[molecules]
+ 	DNA_chain_A    1
+
+For Protein-Protein simulation
+
+	[molecules]
+ 	Protein_chain_A	   1
 
 # Build the .gro file for the complex #
 **Now you have to copy the "conf.gro" and "LIG.gro" file into a "complex.gro" file**
@@ -214,7 +231,7 @@ SO, IT WILL LOOK LIKE--
 	Protein_chain_A		1
 	LIG			1
 
-
+For Protein-DNA/RNA simulation `LIG` will be replaced by `DNA_chain_A` and `RNA_chain_A` respectively.
 
 # EDIT THE FOLLOWING in lig.itp  or LIG.top #
 
@@ -229,11 +246,14 @@ TO
 *(in certain cases this will already be `LIG 3` so for such case no change is needed)*
 
 ----------
+Then to place the system or complex within a box, use the following `gmx editconf` command:
 
 	gmx_mpi editconf -f complex.gro -d 1.0 -bt triclinic -o box.gro 
 
 *(You can also change `triclinic` to `dodecahedron` as per your requirement)*
 Next step is the solvation of the complex..
+
+Now add solvent into the box created above by the `gmx solvate` command:
 
 	gmx_mpi solvate -cp box.gro -cs spc216.gro -p topol.top -o solv.gro
 
@@ -249,15 +269,16 @@ Use the [ions.mdp](MDP_Files/ions.mdp) file for the command.
 
 *(The `-maxwarn 2` option is sometimes required to ignore the warnings)*
 
+Then, use the following `gmx genion` command to add required number of NA and CL to neutralize the charge of the whole system. You can also specify the number of atoms you want to add by seeing the `qtot` number described in the `[ATOMS]` section of the topol.top file. Otherwise `gmx genion` will automatically calculate the total charge of the system and add required NA and CL into the system.
 
 	gmx_mpi genion -s ions.tpr -p topol.top -conc 0.1 -neutral -o solv_ions.gro
 
-(Select Option)
+(Select Option) This will ensure that `gmx genion` replaces "SOL" to add NA and CL
 
-	15
+	15 (For "SOL")
 
 # Energy Minimization #
-Then, go for energy minimization. To build the energy minimization tpr file (em.tpr) use the [em.mdp](MDP_Files/em.mdp)
+Then, go for energy minimization. To build the energy minimization tpr file (em.tpr) by `gmx grompp`, use the [em.mdp](MDP_Files/em.mdp). And use the following command:
 	
 	gmx_mpi grompp -f em.mdp -c solv_ions.gro -p topol.top -o em.tpr
 
@@ -274,7 +295,7 @@ Then for final energy minimization
 In that script you can change the walltime, output name, job name as per your requirement.
 
 # Making index file for ligand #
-Now make index files
+Now make index files.
  
 	gmx_mpi make_ndx -f LIG.gro -o index_LIG.ndx
 
@@ -285,7 +306,7 @@ Now make index files
 
 # Making the position restraint file for the ligand #
 
-#Now, make the position restraint file for the ligand. It is not always required for Protein-Protein and Protein-DNA/RNA simulation as the `gmx pdb2gmx` already builds a position restraint file for the ligand (which was previously described to rename as "posre_LIG.itp".#
+Now, make the position restraint file for the ligand. It is not always required for Protein-Protein and Protein-DNA/RNA simulation as the `gmx pdb2gmx` already builds a position restraint file for the ligand (which was previously described to rename as "posre_LIG.itp".
 	
 	gmx_mpi genrestr -f LIG.gro -n index_LIG.ndx -o posre_LIG.itp -fc 1000 1000 1000
 
@@ -321,13 +342,13 @@ is mentioned. Modify it as,
 
 	; Include ligand topology
  	#include "LIG.top
-  	#Ifdef POSRES
+  	#ifdef POSRES
    	#include "posre_LIG.itp"
     	#endif
 
 
-# Making other Index file for the whole System #
-
+# Making other Index file for the Complex system from the whole System #
+This index file is specifically useful for Protein-ligand or Protein-DNA/RNA/Protein complex simulation, as the new index option created as `Protein_LIG` or `Protein_DNA` or `Protein_RNA` or `Protein_Protein` can be used in post-processing steps to specify the `Protein_LIG` or `Protein_DNA` or `Protein_RNA` or `Protein_Protein` complexes rather that specifying the whole system involving SOL and other molecules.
 
 	gmx_mpi make_ndx -f em.gro -o index.ndx
 
@@ -356,7 +377,7 @@ For Protein in water (Protein only) simulation, choose tc groups as
 
 	Protein Non-protein
 
-Then use the following command to generate *nvt.tpr* file
+Then use the following `gmx grompp` command to generate `nvt.tpr` file
 
 
 	gmx_mpi grompp -f nvt.mdp -c em.gro -r em.gro -p topol.top -n index.ndx -maxwarn 2 -o nvt.tpr
@@ -382,7 +403,7 @@ For Protein in water (Protein only) simulation, choose tc groups as
 
 	Protein Non-protein
 
-Then use the following command to generate `npt.tpr` file
+Then use the following `gmx grompp` command to generate `npt.tpr` file
 
 	gmx_mpi grompp -f npt.mdp -c nvt.gro -r nvt.gro -p topol.top -n index.ndx -maxwarn 2 -o npt.tpr
 	
@@ -409,7 +430,7 @@ AND THEN
 AND THEN
 	
 	gmx_mpi mdrun -deffnm md
-**(For this you can use [md_complex.pbs](PBS_Files/md_complex.pbs) script. Remember to change the MD_NAME, Job name, walltime, output filename accordingly)**
+**(For this you can use [md_complex.pbs](PBS_Files/md_complex.pbs) script or the [md_cpu.pbs](PBS_Files/md_cpu.pbs) script. Remember to change the MD_NAME, Job name, walltime, output filename accordingly)**
 
 
 
