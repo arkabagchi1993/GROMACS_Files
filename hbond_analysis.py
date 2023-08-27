@@ -1,8 +1,8 @@
 import numpy as np
 import MDAnalysis as mda
 
-xtcfile = 'md100_center.xtc'
-topfile = 'md100_rescale.tpr'
+xtcfile = /path/to/xtc/file
+topfile = /path/to/tpr/file
 u = mda.Universe(topfile, xtcfile)
 
 from MDAnalysis.analysis.hydrogenbonds.hbond_analysis import HydrogenBondAnalysis as HBA
