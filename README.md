@@ -589,10 +589,14 @@ Then select options
 
 -------------- With Matplot (Jupyter notebook)-----------------
 1. Install jupyter notebook in a conda environment by typing, `conda install jupyter notebook` or `pip install jupyter notebook`.
-2. Open jupyter notebook and open Python3 kernel (from 'New').
-3. Paste the lines from the [mdanalysis_hbond.py](mdanalysis_hbond.py).
-4. Give the proper input files in the `/path/to/input/files` section (the final trajectory file named `md_center.xtc` and the final tpr file named `md.tpr`) and change the `start=` frame according to your query.
-5. Click `run`.
+2. Install `MDAnalysis` in the same conda environment.
+3. Open jupyter notebook and open Python3 kernel (from 'New').
+4. Paste the lines from the [mdanalysis_hbond.py](mdanalysis_hbond.py).
+5. Give the proper input files in the `/path/to/input/files` section (the final trajectory file named `md_center.xtc` and the final tpr file named `md.tpr`) and change the `start=` frame according to your query.
+6. Click `run`.
+
+**OR**
+If you want to analyse all the hydrogen bonds at a time, you can use the [gromacs_hbond_analysis.pbs](PBS_Files/gromacs_hbond_analysis.pbs) script. This script utilizes the [hbond_analysis.py](hbond_analysis.py) python script to write all the hydrogen bonds at each nanosecond in a text file. You can change the name of the name of the text file by changing the `hb_2R_all.txt` in the `python hbond_analysis.py >> hb_2R_all.txt` section of the [gromacs_hbond_analysis.pbs](PBS_Files/gromacs_hbond_analysis.pbs) script. You will also have to keep in mind to change the name of the python environment in the `python3` section of the `source ${PBS_O_HOME}/.conda/bin/activate ${PBS_O_HOME}/.conda/envs/python3` line in the [gromacs_hbond_analysis.pbs](PBS_Files/gromacs_hbond_analysis.pbs) script.
 
 
 #########################################################################
