@@ -596,7 +596,8 @@ Then select options
 6. Click `run`.
 
 **OR**
-If you want to analyse all the hydrogen bonds at a time, you can use the [gromacs_hbond_analysis.pbs](PBS_Files/gromacs_hbond_analysis.pbs) script. This script utilizes the [hbond_analysis.py](hbond_analysis.py) python script to write all the hydrogen bonds at each nanosecond in a text file. You can change the name of the name of the text file by changing the `hb_2R_all.txt` in the `python hbond_analysis.py >> hb_2R_all.txt` section of the [gromacs_hbond_analysis.pbs](PBS_Files/gromacs_hbond_analysis.pbs) script. You will also have to keep in mind to change the name of the python environment in the `python3` section of the `source ${PBS_O_HOME}/.conda/bin/activate ${PBS_O_HOME}/.conda/envs/python3` line in the [gromacs_hbond_analysis.pbs](PBS_Files/gromacs_hbond_analysis.pbs) script.
+
+If you want to analyse all the hydrogen bonds at a time, you can use the [gromacs_hbond_analysis.pbs](PBS_Files/gromacs_hbond_analysis.pbs) script. This script utilizes the [hbond_analysis.py](hbond_analysis.py) python script to write all the hydrogen bonds at each nanosecond in a text file. You can change the name of the name of the text file by changing the `hb_2R_all.txt` in the `python hbond_analysis.py >> hb_2R_all.txt` section of the [gromacs_hbond_analysis.pbs](PBS_Files/gromacs_hbond_analysis.pbs) script. You will also have to keep in mind to change the name of the python environment in the `python3` section of the `source opt/anaconda3/bin/activate ${PBS_O_HOME}/.conda/envs/python3` line in the [gromacs_hbond_analysis.pbs](PBS_Files/gromacs_hbond_analysis.pbs) script. You will also have to enter the path or name of the xtc file and tpr file in the `/path/to/xtc/file` and `/path/to/tpr/file` section of the [hbond_analysis.py](hbond_analysis.py) python script.
 
 
 #########################################################################
