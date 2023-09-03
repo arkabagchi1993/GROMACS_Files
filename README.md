@@ -351,7 +351,7 @@ is mentioned. Modify it as,
  	#include "LIG.top
   	#ifdef POSRES
    	#include "posre_LIG.itp"
-    	#endif
+	#endif
 
 
 # Making other Index file for the Complex system from the whole System #
@@ -668,7 +668,7 @@ Then choose options
 
 -------------- With Matplot (Jupyter notebook)-----------------
 1. Install jupyter notebook in a conda environment by typing, `conda install jupyter notebook` or `pip install jupyter notebook`.
-2. Install `MDAnalysis` in the same conda environment.
+2. Install `MDAnalysis` in the same conda environment with `pip install MDAnalysis` command.
 3. Open jupyter notebook and open Python3 kernel (from 'New').
 4. Paste the lines from the [mdanalysis_hbond.py](mdanalysis_hbond.py).
 5. Give the proper input files in the `/path/to/input/files` section (the final trajectory file named `md_center.xtc` and the final tpr file named `md.tpr`) and change the `start=` frame according to your query.
@@ -695,8 +695,9 @@ If you want to analyse all the hydrogen bonds at a time, you can use the [gromac
 
 -------------- With Matplot (Jupyter notebook)-----------------
 1. Install jupyter notebook in a conda environment by typing, `conda install jupyter notebook` or `pip install jupyter notebook`.
-2. Open jupyter notebook and open Python3 kernel (from 'New').
-3. Paste the lines in the [matplot.py](matplot.py) or [matplo_multidata.py](matplot_multidata.py) and click `run`.
+2. Install Matplot in the same conda environment by using `pip install matplotlib` command.
+3. Open jupyter notebook and open Python3 kernel (from 'New').
+4. Paste the lines in the [matplot.py](matplot.py) or [matplo_multidata.py](matplot_multidata.py) and click `run`.
 (Change the filename, x label, y label and title of plot according to your requirement)
 
 
