@@ -521,6 +521,40 @@ To extract the first frame (t = 0 ns) of the trajectory, use `trjconv` and  `-du
 	4
 **(Here `-tu ns` option ensures time unit to be ns)**
 
+# RMSD Calculation for Protein-Protein Simulation #
+
+For Protein-Protein simulation, it is important to split the two chains before calculating the RMSDs of the two proteins. So, for that you have to make new index for the splitted chains, with the following command:
+
+	gmx_mpi make_ndx -f md.gro -o chain_CA.ndx
+
+Type the following option
+
+ 	> splitch 3
+
+and then
+
+	>q
+
+Then utilize the following command to calculate RMSD
+
+	gmx_mpi rms -s md.tpr -f md_center.xtc -o rmsd.xvg -tu ns
+
+Choose the following option
+
+	> 19 (C-alpha_chain1)
+
+AND then,
+
+	> 19 (C-alpha_chain1)
+
+For the next chain, utilize the same `gmx rms` command and choose
+
+	> 20 (C-alpha_chain2)
+
+AND then,
+
+	>20 (C-alpha_chain2)
+
 
 
 
@@ -536,6 +570,32 @@ To extract the first frame (t = 0 ns) of the trajectory, use `trjconv` and  `-du
 For residue specific RMSF calculation, use:
 
 	gmx_mpi rmsf -s md.tpr -f md_center.xtc -o rmsf.xvg -res
+
+# RMSF Calculation for Protein-Protein Simulation #
+
+For calculation of RMSF of the two protein chains, first make index for the full chains
+
+	gmx_mpi make_ndx -f md.gro -o chain.ndx
+
+Type the following option
+
+	> splitch 1
+
+AND then,
+
+	> q
+
+Then utilize the following command to calculate the RMSF. It is important to note that for this step, do not use `-res` option, as the residue number of two chains might overlap. So, it is better to calculate RMSF atom wise.
+
+	gmx_mpi rmsf -s md.tpr -f md_center.xtc -o rmsf.xvg
+
+Choose option
+
+	> 19 (Protein_chain1)
+
+AND for the next chain,
+
+	> 20 (Protein_chain2)
 
 
 # Calculating No.of hydrogen bonds #
@@ -566,6 +626,18 @@ cd to the working directory and then type:
 	LD_LIBRARY_PATH="" singularity run --nv -B ${PWD}:/workspace ~/.config/sifdir/gromacs_2022.3.sif bash -c "cd /workspace && gmx hbond -s md.tpr -f md_center.xtc -num hb.xvg -tu ns"
 
 Then select options
+
+# Hydrogen Bonds for Protein-Protein Complex #
+
+Use the following command:
+
+	LD_LIBRARY_PATH="" singularity run --nv -B ${PWD}:/workspace ~/.config/sifdir/gromacs_2022.3.sif bash -c "cd /workspace && gmx hbond -s md.tpr -f md_center.xtc -n chain.ndx -num hb.xvg -tu ns"
+
+Then choose options
+
+	> 19 (Protein_chain1)
+ 	> 20 (Protein_chain2)
+
 
 
 # Calculation of Gyration Radius #
