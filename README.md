@@ -131,13 +131,15 @@ Choose the options:
 
 	1 (TIP3P)
 
-*Point to note*: If you are simulating a protein with multiple side chains, sometimes fixing the side-chains of the PDB acquired from "www.rcsb.org" is required. For that use the "spdbv" software as described below.
+You can also choose the groups of your interest, such as protein-DNA/RNA MD, you should use amber forcefield.
+
+*Point to note*: If you are simulating a protein with multiple side chains, sometimes fixing the side-chains of the PDB acquired from "www.rcsb.org" is required. For that use the "spdbv" software as described above.
 
 **This will generate a file named "conf.gro".** You can also specify the name of the output gro file by `-o name.gro` option.
 
 	gmx_mpi editconf -f LIG.pdb -o LIG.gro
 
-# If you are simulating Protein-Protein or Protein-DNA/RNA then #
+# If you are simulating Protein-DNA/RNA #
 
 Generate the LIgand topology with
 	
@@ -180,10 +182,6 @@ For Protein-DNA simulation:
 	[molecules]
  	DNA_chain_A    1
 
-For Protein-Protein simulation
-
-	[molecules]
- 	Protein_chain_A	   1
 
 # Build the .gro file for the complex #
 **Now you have to copy the "conf.gro" and "LIG.gro" file into a "complex.gro" file**
@@ -204,7 +202,9 @@ add
 	; Include ligand topology 
 	#include "LIG.itp"
 
-	below- Include forcefield parameters
+below-
+
+	Include forcefield parameters
 	#include "amberGS.ff/forcefield.itp")
 
 # If you are performing the simulation with Protein-Protein or Protein-DNA/RNA #
@@ -214,7 +214,7 @@ Then add,
  	; Include ligand topology
  	#include "LIG.top"
 
-below
+below-
 	
  	; Include forcefield parameters
  	#include "amberGS.ff/forcefield.itp"
@@ -245,7 +245,11 @@ TO
 	LIG 3
 *(in certain cases this will already be `LIG 3` so for such case no change is needed)*
 
-----------
+---------------------------------------
+**If you are simulating Protein-Protein complex,** then you can start directly with the Protein-Protein docked complex pdb and use the following `gmx_mpi pdb2gmx` command to create complex.gro file directly.
+
+	gmx_mpi pdb2gmx -f Complex.pdb -o complex.gro -ignh
+
 Then to place the system or complex within a box, use the following `gmx editconf` command:
 
 	gmx_mpi editconf -f complex.gro -d 1.0 -bt triclinic -o box.gro 
@@ -295,6 +299,8 @@ Then for final energy minimization
 In that script you can change the walltime, output name, job name as per your requirement.
 
 # Making index file for ligand #
+**This step is not required for Protein-Protein MD**
+
 Now make index files.
  
 	gmx_mpi make_ndx -f LIG.gro -o index_LIG.ndx
@@ -305,6 +311,7 @@ Now make index files.
  	> q
 
 # Making the position restraint file for the ligand #
+**This step is not required for Protein-Protein MD**
 
 Now, make the position restraint file for the ligand. It is not always required for Protein-Protein and Protein-DNA/RNA simulation as the `gmx pdb2gmx` already builds a position restraint file for the ligand (which was previously described to rename as "posre_LIG.itp".
 	
@@ -333,7 +340,7 @@ Modify it as
 	#include "posre_LIG.itp"
 	#endif
 
-**For Protein-Protein and Protein-DNA/RNA simulation, the posre_LIG.itp file needs to be included at a different place, which is at the top of the file where,**
+**For Protein-DNA/RNA simulation, the posre_LIG.itp file needs to be included at a different place, which is at the top of the file where,**
 
 	; Include ligand topology
  	#include "LIG.top"
@@ -348,7 +355,7 @@ is mentioned. Modify it as,
 
 
 # Making other Index file for the Complex system from the whole System #
-This index file is specifically useful for Protein-ligand or Protein-DNA/RNA/Protein complex simulation, as the new index option created as `Protein_LIG` or `Protein_DNA` or `Protein_RNA` or `Protein_Protein` can be used in post-processing steps to specify the `Protein_LIG` or `Protein_DNA` or `Protein_RNA` or `Protein_Protein` complexes rather that specifying the whole system involving SOL and other molecules.
+This index file is specifically useful for Protein-ligand or Protein-DNA/RNA/Protein complex simulation, as the new index option created as `Protein_LIG` or `Protein_DNA` or `Protein_RNA` can be used in post-processing steps to specify the `Protein_LIG` or `Protein_DNA` or `Protein_RNA` complexes rather that specifying the whole system involving SOL and other molecules.
 
 	gmx_mpi make_ndx -f em.gro -o index.ndx
 
@@ -373,7 +380,7 @@ For Protein-DNA simulation, choose tc groups as
 For Protein-RNA simulation, choose rc groups as 
 
 	Protein_RNA Water_and_ions
-For Protein in water (Protein only) simulation, choose tc groups as
+For Protein in water (Protein only) simulation or Protein-Protein simulation, choose tc groups as
 
 	Protein Non-protein
 
@@ -399,7 +406,7 @@ For Protein-DNA simulation, choose tc groups as
 For Protein-RNA simulation, choose rc groups as 
 
 	Protein_RNA Water_and_ions
-For Protein in water (Protein only) simulation, choose tc groups as
+For Protein in water (Protein only) simulation or Protein-Protein simulation, choose tc groups as
 
 	Protein Non-protein
 
