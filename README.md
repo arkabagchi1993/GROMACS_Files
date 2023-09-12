@@ -655,6 +655,35 @@ Then choose options
 
 	4
 
+# Distance Calculation between atoms involved in hbond #
+
+To calculate the distance between the donor and the acceptor atoms involved in a hydrogen bond, first you need to make an index file containing a group of only these two atoms. To do that use the following command
+
+	gmx_mpi make_ndx -f md.gro -o atom_group.ndx
+
+Choose the appropriate options. Here the numbers '9593' and '5804' refers to the atom id of the atoms acting as donor and acceptor, which can be recognised from `hbond_analysis.py`.
+
+	> a 9593 | a 5804
+ 	> q
+
+Then use the `atom_group.ndx` file can be used to calculate the distance between these atoms with the following command:
+
+	gmx_mpi distance -f md_center.xtc -s md.tpr -n atom_group.ndx -select 24 -o distav.xvg
+
+The value after option `-select` is for specifying the newly created froup in the `atom_group.ndx` file.
+
+# Determination of angle between the tree atoms forming hydrogen bond with respect to time #
+
+To calculate the change of angle and average angle formed by the three atoms involved in the hydrogen bond, first you need to make an index file containing only the three atoms. 
+
+	gmx_mpi make_ndx -f md.gro -o angle.ndx
+
+Choose the following options. Here the number '9593', '9625' and '5804' represents the atom id of the atoms involved in the hydrogen bonds, which can be recognised from the `hbond_analysis.py`.
+Then, use the following command to calculate the angle with respect to time and the average angle formd by these atoms:
+
+	gmx_mpi angle -f md_center.xtc -n angle.ndx -od angdist.xvg -ov angaver.xvg
+
+
 # ENERGY Calculations #
 
 	gmx_mpi energy -f md.edr -o energy1.xvg
