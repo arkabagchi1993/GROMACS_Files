@@ -12,6 +12,10 @@ pattern = r'Current Frame: (\d+)\n<AtomGroup .+ resid (\d+) .+ segid'
 matches = np.array(re.findall(pattern, data), dtype=np.int64)
 frames1 = matches[:,0]
 atoms_ids1 = matches[:,1]
+# Sometimes if there are more than one chains in the protein,
+# MDAnalysis miscalculates the residue number.
+# Then verify the interaction with PLIP server and add the residue number with atom_ids like:
+#atom_ids1 = matches[:, 1] + 39
 
 # Define the threshold number
 threshold = 400
