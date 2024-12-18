@@ -332,6 +332,9 @@ For Protein-RNA simulation, choose rc groups as
 For Protein in water (Protein only) simulation or Protein-Protein simulation, choose tc groups as
 
 	Protein Non-protein
+For Protein with Zn
+
+	Protein_LIG_ZN2 Water_and_ions
 
 Then use the following `gmx grompp` command to generate `nvt.tpr` file
 
@@ -358,6 +361,9 @@ For Protein-RNA simulation, choose rc groups as
 For Protein in water (Protein only) simulation or Protein-Protein simulation, choose tc groups as
 
 	Protein Non-protein
+For Protein with Zn
+
+	Protein_LIG_ZN2 Water_and_ions
 
 Then use the following `gmx grompp` command to generate `npt.tpr` file
 
