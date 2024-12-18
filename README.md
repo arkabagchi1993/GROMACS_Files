@@ -60,7 +60,7 @@
 	change it to LIG (Or the name given by you instead of "LIG") 
 	
 2.3.	bond orders "@<TRIPOS>BOND" will be arranged differently in each file 
-arrange them in specific order to avoid errors use "sort_mol2_bonds.pl" script.
+arrange them in specific order to avoid errors use this [perl_script](sort_mol2_bonds.pl)
 	
 	perl sort_mol2_bonds.pl LIG.mol2 LIG.mol2
 
@@ -135,62 +135,29 @@ You can also choose the groups of your interest, such as protein-DNA/RNA MD, you
 
 *Point to note*: If you are simulating a protein with multiple side chains, sometimes fixing the side-chains of the PDB acquired from "www.rcsb.org" is required. For that use the "spdbv" software as described above.
 
+# If you are simulating a protein with Zn #
+Make sure to edit the pdb file and change all the `ZN` to `ZN2`. Otherwise it won't match Gromacs rtp entry and will pop an error
+
 **This will generate a file named "conf.gro".** You can also specify the name of the output gro file by `-o name.gro` option.
 
 	gmx_mpi editconf -f LIG.pdb -o LIG.gro
 
-# If you are simulating Protein-DNA/RNA #
+# If you are simulating Protein-DNA/RNA or Protein-Protein #
 
-Generate the LIgand topology with
-	
- 	gmx_mpi pdb2gmx -f LIG.pdb -o LIG.gro -ignh
-
-This will generate three files, LIG.gro, posre.itp and topol.top. Now rename the posre.itp as "posre_LIG.itp" and topol.top as "LIG.top"
-# Edit the LIG.top file as described below: #
-Remove from the top of the file,
-	
- 	; Include forcefield parameters
- 	#include amberGS.f/forcefiled.itp"
-And remove from the bottom of the file the protein mentioned below, this will ensure that no itp file is called twice, as they are already called at the topol.top file.
-	
- 	; Include Position restraint file
-	#ifdef POSRES
-	#include "posre.itp"
-	#endif
-
-	; Include water topology
-	#include "amber96.ff/tip3p.itp"
-
-	#ifdef POSRES_WATER
-	; Position restraint for each water oxygen
-	[ position_restraints ]
-	;  i funct	 fcx        fcy        fcz
-   	1    1	1000	   1000       1000
-	#endif
-
-	; Include topology for ions
-	#include "amber96.ff/ions.itp"
-
-After that you have to also remove the part from the `LIG.top` file, described below: (Which will ensure that the RNA/DNA/Protein molecule is called only once in the `topol.top` file)
-For Protein/RNA simulation:
-
-	[molecules]
- 	RNA_chain_A    1
-
-For Protein-DNA simulation:
-
-	[molecules]
- 	DNA_chain_A    1
-
+Then no need to generate any LIG.itp or LIG.top file, just start directly from `pdb2gmx` and then directly go for box building.
 
 # Build the .gro file for the complex #
 **Now you have to copy the "conf.gro" and "LIG.gro" file into a "complex.gro" file**
 To do that, follow the steps-----
-	1. Type `cp ./conf.gro ./complex.gro`  (This will make a copy the "conf.gro" and name it as "complex.gro")
-	2. Now open LIG.gro file in text editor by typing `nano LIG.gro` and copy from the third line of the file to the second last line of the file.
-	3. To open the "complex.gro" file in text editor, type `nano complex.gro`
-	4. Now go to the last line of the file, you will find some numbers (cordinates) written there. Place the cursor there and paste the copied part from the LIG.gro file. OR you can just place the cursor at the described place and type `Ctrl+R` and the `LIG.gro` and press enter. This will insert the whole `LIG.gro` file there. Then you just have to remove the unnecessary lines.
-	5. Now, you will find a `molecule number` at the top of each conf.gro and LIG.gro files (mentioned as just numbers, such as 4265 in case of conf.gro and 60 in case of LIG.gro). Add these to numbers (which will be for eg. 4285) and simply replace the molecule number of "complex.gro" file with the added value.
+1. Type `cp ./conf.gro ./complex.gro`  (This will make a copy the "conf.gro" and name it as "complex.gro")
+ 
+2. Now open LIG.gro file in text editor by typing `nano LIG.gro` and copy from the third line of the file to the second last line of the file.
+ 
+3. To open the "complex.gro" file in text editor, type `nano complex.gro`
+
+4. Now go to the last line of the file, you will find some numbers (cordinates) written there. Place the cursor there and paste the copied part from the LIG.gro file. OR you can just place the cursor at the described place and type `Ctrl+R` and the `LIG.gro` and press enter. This will insert the whole `LIG.gro` file there. Then you just have to remove the unnecessary lines.
+
+5. Now, you will find a `molecule number` at the top of each conf.gro and LIG.gro files (mentioned as just numbers, such as 4265 in case of conf.gro and 60 in case of LIG.gro). Add these to numbers (which will be for eg. 4285) and simply replace the molecule number of "complex.gro" file with the added value.
 	
 	
 *(You can check the receptor and ligand by downloading the "complex.gro" and opening it in PyMol)*
@@ -207,21 +174,9 @@ below-
 	Include forcefield parameters
 	#include "amberGS.ff/forcefield.itp")
 
-# If you are performing the simulation with Protein-Protein or Protein-DNA/RNA #
-
-Then add,
-	
- 	; Include ligand topology
- 	#include "LIG.top"
-
-below-
-	
- 	; Include forcefield parameters
- 	#include "amberGS.ff/forcefield.itp"
-
 
 AT THE BOTTOM OF THE SAME FILE PERFORM FOLLOWING CHANGES
-(add `LIG 1`
+add `LIG 1`
 align exactly below-
 	
  	Protein_chain_A     1)
@@ -231,7 +186,6 @@ SO, IT WILL LOOK LIKE--
 	Protein_chain_A		1
 	LIG			1
 
-For Protein-DNA/RNA simulation `LIG` will be replaced by `DNA_chain_A` and `RNA_chain_A` respectively.
 
 # EDIT THE FOLLOWING in lig.itp  or LIG.top #
 
@@ -340,18 +294,6 @@ Modify it as
 	#include "posre_LIG.itp"
 	#endif
 
-**For Protein-DNA/RNA simulation, the posre_LIG.itp file needs to be included at a different place, which is at the top of the file where,**
-
-	; Include ligand topology
- 	#include "LIG.top"
-
-is mentioned. Modify it as,
-
-	; Include ligand topology
- 	#include "LIG.top
-  	#ifdef POSRES
-   	#include "posre_LIG.itp"
-	#endif
 
 
 # Making other Index file for the Complex system from the whole System #
@@ -369,6 +311,13 @@ This index file is specifically useful for Protein-ligand or Protein-DNA/RNA/Pro
 
 	> 1 | 12
  	> q
+# For Simulation with Zn containing protein #
+Make the index with Protein, LIG and Zn, for that you have to choose 3 options together
+
+	> 1 | 13 | 12
+ 	>q
+This will create a index 'Protein_LIG_ZN2"
+
 # NVT MINIMIZATION #
 **Remember to edit the [nvt.mdp](MDP_Files/nvt.mdp) file to insert proper tc coupling groups.**
 For Protein-Ligand simulation, choose tc groups as 
