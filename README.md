@@ -662,6 +662,28 @@ Then, use the following command to calculate the angle with respect to time and 
 
 If you want to analyse all the hydrogen bonds at a time, you can use the [gromacs_hbond_analysis.pbs](PBS_Files/gromacs_hbond_analysis.pbs) script. This script utilizes the [hbond_analysis.py](hbond_analysis.py) python script to write all the hydrogen bonds at each nanosecond in a text file. You can change the name of the name of the text file by changing the `hb_2R_all.txt` in the `python hbond_analysis.py >> hb_2R_all.txt` section of the [gromacs_hbond_analysis.pbs](PBS_Files/gromacs_hbond_analysis.pbs) script. You will also have to keep in mind to change the name of the python environment in the `python3` section of the `source opt/anaconda3/bin/activate ${PBS_O_HOME}/.conda/envs/python3` line in the [gromacs_hbond_analysis.pbs](PBS_Files/gromacs_hbond_analysis.pbs) script. You will also have to enter the path or name of the xtc file and tpr file in the `/path/to/xtc/file` and `/path/to/tpr/file` section of the [hbond_analysis.py](hbond_analysis.py) python script.
 
+# Principal Component Analysis #
+For Principal Component Analysis we would first create the PC1.xvg and PC2.xvg files using `gmx covar` and `gmx anaeig`. Then with the help of python we can plot the 2D and 3D plots.
+
+For this you first need to dump the pdb of the start point of the simulation with
+
+	gmx_mpi trjconv -s md.tpr -f md_center.xtc -o start.pdb -dump 0
+
+Choose the option `0` for `System`
+Then,
+
+	printf '4\n4\n' | gmx_mpi covar -s start.pdb -f md_center.xtc -o eigenvalues.xvg -v eigenvectors.trr -xpma covapic.xpm
+
+Then,
+
+	printf '4\n4\n' | gmx_mpi anaeig -f md_center.xtc -s start.pdb -v eigenvectors.trr -last 1 -proj pc1.xvg
+
+Then,
+
+	printf '4\n4\n' | gmx_mpi anaeig -f md_center.xtc -s start.pdb -v eigenvectors.trr -first 2 -last 2 -proj pc2.xvg
+
+Now, with this pc1.xvg and pc2.xvg we can plot the PC1 vs PC2 vs Time (ns) plot using this
+
 
 #########################################################################
 # Visualization of xvg files #
