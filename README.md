@@ -682,13 +682,13 @@ Then,
 
 	printf '4\n4\n' | gmx_mpi anaeig -f md_center.xtc -s start.pdb -v eigenvectors.trr -first 2 -last 2 -proj pc2.xvg
 
-Now, with this pc1.xvg and pc2.xvg we can plot the PC1 vs PC2 vs Time (ns) plot using this [Python_script](PCA_Analysis_3D.py) using matplot.
+Now, with this pc1.xvg and pc2.xvg we can plot the PC1 vs PC2 vs Time (ns) plot using this [Python_script](PCA_analysis_3D.py) using matplot.
 
 This will look like:
 
 ![PCA_time gradient-3D_1l6j_roli_1](https://github.com/user-attachments/assets/262c90f1-cb4d-49f6-8ebe-96cf10d1627d)
 
-Or, you can use the pc1.xvg and pc2.xvg to plot the 2D graph using this , which will look like this:
+Or, you can use the pc1.xvg and pc2.xvg to plot the 2D graph using this [Python_Script](PCA_analysis_2D.py), which will look like this:
 
 ![PCA_time_gradient_2D](https://github.com/user-attachments/assets/469c858c-53f4-4bb0-8a45-6d14fca4d0d4)
 
